@@ -16,4 +16,3 @@ Sovelluksen ominaisuuksia:
 - käyttäjä voi lähettää viestiä muille käyttäjille yksityisesti
 - ylläpitäjä voi muokata ryhmän nimeä sekä poistaa käyttäjiä ryhmästään
 
-- MOI
