@@ -15,3 +15,5 @@ Sovelluksen ominaisuuksia:
 - käyttäjä voi liittyä listan ryhmiin ja lähettämään sinne viestiä
 - käyttäjä voi lähettää viestiä muille käyttäjille yksityisesti
 - ylläpitäjä voi muokata ryhmän nimeä sekä poistaa käyttäjiä ryhmästään
+
+- MOI
