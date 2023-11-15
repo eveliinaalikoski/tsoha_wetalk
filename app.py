@@ -1,14 +1,12 @@
-import os
-from app import app
+from os import getenv
 from flask import Flask
 from flask import render_template, request, redirect
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.sql import text
-from db import db
 
 app = Flask(__name__)
-app.secret_key=os.getenv("SECRET_KEY")
 app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql:///alev"
+#app.config["SQLALCHEMY_DATABASE_URI"] = getenv("DATABASE_URL")
 db=SQLAlchemy(app)
 
 @app.route("/")
@@ -17,10 +15,10 @@ def index():
 
 @app.route("/login", methods=["POST"])
 def login():
-	username=request.form["username"]
-	sql="INSERT INTO users (username, password) VALUES (:username, NOW()) RETURNING id"
-	db.session.execute(sql, {"username":username})
-	db.session.commit()
+	# username=request.form["username"]
+	# sql="INSERT INTO users (username, password) VALUES (:username, NOW()) RETURNING id"
+	# db.session.execute(sql, {"username":username})
+	# db.session.commit()
 	return render_template("login.html")
 
 @app.route("/register", methods=["POST"])
@@ -29,8 +27,8 @@ def register():
 	
 @app.route("/front_page", methods=["POST", "GET"])
 def front_page():
-	username=request.form["username"]
-	groups=db.session.execute(text("SELECT group_name FROM groups"))
+	username="testi" #request.form["username"]
+	groups=["1", "2", "3"] #db.session.execute(text("SELECT group_name FROM groups"))
 	return render_template("front_page.html",
 						username=username,
 						groups=groups)
