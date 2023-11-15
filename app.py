@@ -37,3 +37,7 @@ def front_page():
 def join():
 	group="test"
 	return render_template("/join.html", group=group)
+
+@app.route("/send", methods=["POST", "GET"])
+def send():
+	return 
