@@ -1,4 +1,4 @@
-from os import getenv
+import os
 from app import app
 from flask import Flask
 from flask import render_template, request, redirect
@@ -7,7 +7,7 @@ from sqlalchemy.sql import text
 from db import db
 
 app = Flask(__name__)
-app.secret_key=getenv("SECRET_KEY")
+app.secret_key=os.getenv("SECRET_KEY")
 app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql:///alev"
 db=SQLAlchemy(app)
 
@@ -17,7 +17,10 @@ def index():
 
 @app.route("/login", methods=["POST"])
 def login():
-	
+	username=request.form["username"]
+	sql="INSERT INTO users (username, password) VALUES (:username, NOW()) RETURNING id"
+	db.session.execute(sql, {"username":username})
+	db.session.commit()
 	return render_template("login.html")
 
 @app.route("/register", methods=["POST"])
