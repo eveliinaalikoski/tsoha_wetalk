@@ -1,0 +1,12 @@
+<title>Group_page</title>
+<h1>Group page</h1>
+
+<b>{{ group_name }}</b><br>
+
+Number of messages: {{ count }}
+
+<hr>
+{% for message in messages %}
+{{ message }} 
+<hr>
+{% endfor %}
