@@ -3,6 +3,8 @@ from flask import Flask
 from flask import render_template, request, redirect
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.sql import text
+import messages
+import users
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql:///alev"
@@ -52,10 +54,13 @@ def join():
 	return render_template("/join.html", group=group)
 
 @app.route("/group_page", methods=["POST", "GET"])
-def group():
-	group_name="test"
-	list=messages.get_list()
-	return render_template("group_page.html", count=len(list), messages=list, group_name=group_name)
+def group_page():
+	if request.method=="GET":
+		group_name="test"
+		list=["1","2","3","4"] # messages.get_list()
+		return render_template("group_page.html", count=len(list), messages=list, group_name=group_name)
+	if request.method=="POST":
+		return 
 
 @app.route("/send", methods=["POST", "GET"])
 def send():
