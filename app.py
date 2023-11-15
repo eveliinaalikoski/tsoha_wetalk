@@ -12,7 +12,7 @@ def index():
 
 @app.route("/login", methods=["POST"])
 def login():
-	return render_template("login.html", username=username)
+	return render_template("login.html")
 
 @app.route("/register", methods=["POST"])
 def register():
