@@ -60,7 +60,7 @@ def group_page():
 		list=["1","2","3","4"] # messages.get_list()
 		return render_template("group_page.html", count=len(list), messages=list, group_name=group_name)
 	if request.method=="POST":
-		return 
+		return "hei"
 
 @app.route("/send", methods=["POST", "GET"])
 def send():
