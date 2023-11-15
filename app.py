@@ -15,11 +15,14 @@ def index():
 
 @app.route("/login", methods=["POST"])
 def login():
-	# username=request.form["username"]
-	# sql="INSERT INTO users (username, password) VALUES (:username, NOW()) RETURNING id"
-	# db.session.execute(sql, {"username":username})
-	# db.session.commit()
-	return render_template("login.html")
+	if request.method=="GET":
+		return render_template("login.html")
+	if request.method=="POST":
+		username=request.form["username"]
+		password=request.form["password"]
+		if users.login(username, password):
+			return redirect("/front_page")
+		return render_template("error.html", message="Wrong username or password")
 
 @app.route("/register", methods=["POST"])
 def register():
@@ -38,6 +41,14 @@ def join():
 	group="test"
 	return render_template("/join.html", group=group)
 
+@app.route("/group", methods=["POST", "GET"])
+def group():
+	list=messages.get_list()
+	return render_template("group_page.html", count=len(list), messages=list)
+
 @app.route("/send", methods=["POST", "GET"])
 def send():
-	return 
+	content=request.form["content"]
+	if messages.send(content):
+		return redirect("/front_page")
+	return render_template("error.html", message="Error sending message")
