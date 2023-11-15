@@ -2,11 +2,16 @@
 <h1>Front page</h1>
 
 <h2><b>WeTalk</b></h2>
-<p>
-    Tervetuloa WeTalk keskustelusovellukseen! <br>
-    Täällä voit jutella muiden kanssa <br>
-    yksityisesti sekä erilaisissa ryhmissä :)
-</p>
-Hei, {{ username }}!
+Hello, {{ username }}! <br>
 
-<i>tänne listat ryhmistä</i>
+<p>
+    Welcome to WeTalk! <br>
+    Here you can talk with friends privately and <br>
+    in different groups :)
+</p>
+
+<hr>
+{% for group in groups %}
+{{ group }} <a href="/join">Join group</a>
+<hr>
+{% endfor %}
