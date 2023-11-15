@@ -12,8 +12,6 @@ def index():
 
 @app.route("/login", methods=["POST"])
 def login():
-	username=request.form(username)
-	password=request.form(password)
 	return render_template("login.html", username=username)
 
 @app.route("/register", methods=["POST"])
@@ -22,4 +20,5 @@ def register():
 	
 @app.route("/front_page", methods=["POST", "GET"])
 def front_page():
-	return render_template("front_page.html")
+	username=request.form["username"]
+	return render_template("front_page.html", username=username)
