@@ -1,9 +1,10 @@
 from flask import Flask
-from flask import render_template, request
+from flask import render_template, request, redirect
+from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
-# app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql:///alev"
-# db=SQLAlchemy(app)
+app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql:///alev"
+db=SQLAlchemy(app)
 
 @app.route("/")
 def index():
@@ -11,7 +12,9 @@ def index():
 
 @app.route("/login", methods=["POST"])
 def login():
-	return render_template("login.html")
+	username=request.form(username)
+	password=request.form(password)
+	return render_template("login.html", username=username)
 
 @app.route("/register", methods=["POST"])
 def register():
