@@ -33,7 +33,7 @@ def front_page():
 						username=username,
 						groups=groups)
 
-@app.route("/join", methods=["POST"])
+@app.route("/join", methods=["POST", "GET"])
 def join():
 	group="test"
-	return redirect("/front_page", group=group)
+	return render_template("/join.html", group=group)
