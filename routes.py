@@ -1,6 +1,9 @@
 from app import app
 import users, messages
 from flask import render_template, request, redirect
+from flask import session
+import db
+from sqlalchemy.sql import text
 
 @app.route("/")
 def index():
@@ -25,6 +28,9 @@ def register():
 		username=request.form["username"]
 		password1=request.form["password1"]
 		password2=request.form["password2"]
+        if len(username)<2 or len(username)>20:
+            return render_template("error.html", message="Username has to be 2-20 characters")
+
 		if password1!=password2:
 			return render_template("error.html", message="Passwords differ")
 		if users.register(username, password1):
@@ -33,11 +39,11 @@ def register():
 	
 @app.route("/front_page", methods=["POST", "GET"])
 def front_page():
-	username=request.form["username"]
-	groups=db.session.execute(text("SELECT group_name FROM groups"))
-	return render_template("front_page.html",
-						username=username,
-						groups=groups)
+    groups=db.db.session.execute(text("SELECT group_name FROM groups"))
+    if request.method=="GET":
+        return render_template("front_page.html", groups=groups)
+    if request.method=="POST":
+        return render_template("front_page.html", groups=groups)
 
 @app.route("/create_group", methods=["POST", "GET"])
 def create_group():
@@ -45,8 +51,8 @@ def create_group():
         return render_template("create_group.html")
     if request.method=="POST":
         group_name=request.form["group_name"]
-        create=groups.create_group(group_name):
-        if create:
+        create=groups.create_group(group_name)
+        if create_group(group_name):
             return redirect("/front_page")
         return render_template("error.html", message="Creating group failed")
         

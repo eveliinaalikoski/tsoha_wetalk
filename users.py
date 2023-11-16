@@ -1,6 +1,11 @@
-def user(username, password):
+from werkzeug.security import check_password_hash, generate_password_hash
+from flask import session
+import db
+from sqlalchemy.sql import text
+
+def login(username, password):
     sql="SELECT id, password FROM users WHERE username=:username"
-    result=db.session.execute(sql, {"username":username})
+    result=db.db.execute(sql, {"username":username})
     user=result.fetchone()
     if not user:
         return False
