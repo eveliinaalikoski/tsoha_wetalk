@@ -22,20 +22,21 @@ def login():
 
 @app.route("/register", methods=["POST", "GET"])
 def register():
-	if request.method=="GET":
-		return render_template("register.html")
+	# if request.method=="GET":
+	# 	return render_template("register.html")
 	if request.method=="POST":
 		username=request.form["username"]
 		password1=request.form["password1"]
 		password2=request.form["password2"]
-        if len(username)<2 or len(username)>20:
-            return render_template("error.html", message="Username has to be 2-20 characters")
+		if len(username)<2 or len(username)>20:
+			return render_template("error.html", message="Username has to be 2-20 characters")
 		if password1!=password2:
 			return render_template("error.html", message="Passwords differ")
 		if users.register(username, password1):
 			return redirect("/front_page")
 		return render_template("error.html", message="Registeration failed")
-	
+	return render_template("register.html")
+
 @app.route("/front_page", methods=["POST", "GET"])
 def front_page():
     groups=db.db.session.execute(text("SELECT group_name FROM groups"))
@@ -57,13 +58,14 @@ def create_group():
         
 @app.route("/join/{{ group }}", methods=["POST", "GET"])
 def join(group):
+	#get
 	return render_template("/join.html", group=group)
 
 @app.route("/group_page", methods=["POST", "GET"])
 def group_page():
 	if request.method=="GET":
-		group_name="test"
-		list=["1","2","3","4"] # messages.get_list()
+		group_name=request.form["group"]
+		list=messages.get_list()
 		return render_template("group_page.html", count=len(list), messages=list, group_name=group_name)
 	if request.method=="POST":
 		return redirect("/group_page")
@@ -74,6 +76,11 @@ def send():
 		return render_template("send.html")
 	if request.method=="POST":
 		content=request.form["content"]
+		group_name=request.form["group"]
 		if messages.send(content):
-			return render_template("group_page.html")
+			return render_template("group_page.html", group_name=group_name)
 		return render_template("error.html", message="Error sending message")
+
+@app.route("/profile", methods=["POST", "GET"])
+def profile():
+    return render_template("profile.html")

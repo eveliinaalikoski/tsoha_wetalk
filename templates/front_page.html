@@ -17,6 +17,7 @@ Hello {{ session.username }}! <br>
 {{ group }} 
 <form action="/join/{{ group }}">{{ group }}<method="POST">
     <input type="submit" value="Join group">
+    <input type="hidden" name="group" value=group>
 </form>
 <hr>
 {% endfor %}

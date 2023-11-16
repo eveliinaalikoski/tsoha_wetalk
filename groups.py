@@ -6,3 +6,6 @@ def create_group(group_name):
         return True
     except:
         return False
+
+def add_to_group(group_name, username):
+    pass
