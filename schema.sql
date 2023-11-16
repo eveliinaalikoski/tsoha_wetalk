@@ -17,7 +17,7 @@ CREATE TABLE groups (
 
 CREATE TABLE messages (
     id SERIAL PRIMARY KEY,
-    user_id INTEGER REFERENCES users
+    user_id INTEGER REFERENCES users,
     conv_id INTEGER REFERENCES conversations,
     group_id INTEGER REFERENCES groups,
     message TEXT,
