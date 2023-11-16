@@ -33,15 +33,25 @@ def register():
 	
 @app.route("/front_page", methods=["POST", "GET"])
 def front_page():
-	username="testi" #request.form["username"]
-	groups=["1", "2", "3"] #db.session.execute(text("SELECT group_name FROM groups"))
+	username=request.form["username"]
+	groups=db.session.execute(text("SELECT group_name FROM groups"))
 	return render_template("front_page.html",
 						username=username,
 						groups=groups)
 
-@app.route("/join", methods=["POST", "GET"])
-def join():
-	group="test"
+@app.route("/create_group", methods=["POST", "GET"])
+def create_group():
+    if request.method=="GET":
+        return render_template("create_group.html")
+    if request.method=="POST":
+        group_name=request.form["group_name"]
+        create=groups.create_group(group_name):
+        if create:
+            return redirect("/front_page")
+        return render_template("error.html", message="Creating group failed")
+        
+@app.route("/join/{{ group }}", methods=["POST", "GET"])
+def join(group):
 	return render_template("/join.html", group=group)
 
 @app.route("/group_page", methods=["POST", "GET"])
