@@ -10,15 +10,15 @@ def login(username, password):
     if not user:
         return False
     if check_password_hash(user.password, password):
-        session["user_id"]=user.id
+        session["username"]=username
         return True
     return False
 
 def user_id():
-    return session.get("user_id", 0)
+    return session.get("username", 0)
 
 def logout():
-    del session["user_id"]
+    del session["username"]
 
 def register(username, password):
     hash_value=generate_password_hash(password)
