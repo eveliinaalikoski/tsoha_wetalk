@@ -14,28 +14,30 @@ def login():
 	if request.method=="GET":
 		return render_template("login.html")
 	if request.method=="POST":
-		username=request.form["username"]
+		name=request.form["name"]
 		password=request.form["password"]
-		if users.login(username, password):
+		if users.login(name, password):
 			return redirect("/front_page")
-		return render_template("error.html", message="Wrong username or password")
+		return render_template("error.html", message="Wrong name or password")
 
 @app.route("/register", methods=["POST", "GET"])
 def register():
-	# if request.method=="GET":
-	# 	return render_template("register.html")
+	if request.method=="GET":
+		return render_template("register.html")
 	if request.method=="POST":
-		username=request.form["username"]
+		name=request.form["name"]
 		password1=request.form["password1"]
 		password2=request.form["password2"]
-		if len(username)<2 or len(username)>20:
+		print("täällä", name, password1)
+		if len(name)<2 or len(name)>20:
 			return render_template("error.html", message="Username has to be 2-20 characters")
 		if password1!=password2:
 			return render_template("error.html", message="Passwords differ")
-		if users.register(username, password1):
-			return redirect("/front_page")
+		if users.register(name, password1):
+			if users.login(name, password1):
+				return redirect("/front_page")
 		return render_template("error.html", message="Registeration failed")
-	return render_template("register.html")
+
 
 @app.route("/front_page", methods=["POST", "GET"])
 def front_page():
