@@ -28,7 +28,6 @@ def register():
 		name=request.form["name"]
 		password1=request.form["password1"]
 		password2=request.form["password2"]
-		print("täällä", name, password1)
 		if len(name)<2 or len(name)>20:
 			return render_template("error.html", message="Username has to be 2-20 characters")
 		if password1!=password2:
