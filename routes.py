@@ -2,7 +2,6 @@ from app import app
 import users, messages, groups
 from flask import render_template, request, redirect
 from db import db
-from sqlalchemy.sql import text
 from flask import session
 
 @app.route("/")
@@ -34,7 +33,8 @@ def register():
 			return render_template("error.html", message="Passwords differ")
 		register=users.register(name, password1)
 		if register:
-				if users.login(name, password1):
+				if login(name, password1):
+					print("jep")
 					return redirect("/front_page")
 		if not register:
 			return render_template("error.html", message="The username is taken")
@@ -62,21 +62,23 @@ def create_group():
 def join():
 	group=request.form["group_name"]
 	print(group)
+	group=groups.get_group(group)
+	print(group)
 	user_id=session["user_id"]
 	print(1, user_id)
 	add=groups.add_to_group(group, user_id)
-	print("add")
+	print(add)
 	if add:
 		return render_template("join.html", group=group)
 	return render_template("error.html", message="Couldn't join group")
 
 @app.route("/group_page", methods=["POST", "GET"])
 def group_page():
-	if request.method=="POST":
-		group_name=request.form["group_name"]
-		list=messages.get_list()
-		return render_template("group_page.html", count=len(list), messages=list, group_name=group_name)
-	return redirect("/group_page")
+	group_name=session["group"]
+	print(group_name)
+	group_id=groups.get_group_id(group_name)
+	list=messages.get_list(group_id)
+	return render_template("group_page.html", count=len(list), messages=list, group_name=group_name)
 
 @app.route("/send", methods=["POST", "GET"])
 def send():
@@ -85,10 +87,10 @@ def send():
 	if request.method=="POST":
 		user_id=session["user_id"]
 		# conv.id=
-		# group_id=
-		content=request.form["content"]
-		if messages.send(user_id, group_id, content):
-			return render_template("group_page.html", group_name=group_name)
+		group_id=groups.get_group_id(session["group"])
+		message=request.form["message"]
+		if messages.send(user_id, group_id, message):
+			return render_template("sent.html", group_name=session["group"])
 		return render_template("error.html", message="Error sending message")
 
 @app.route("/profile", methods=["POST", "GET"])
