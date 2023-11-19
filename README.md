@@ -16,3 +16,14 @@ Sovelluksen ominaisuuksia:
 - käyttäjä voi lähettää viestiä muille käyttäjille yksityisesti
 - ylläpitäjä voi muokata ryhmän nimeä sekä poistaa käyttäjiä ryhmästään
 
+## Välipalautus 2
+
+Sovelluksen toiminallisuudet:
+- käyttäjä pystyy rekisteröitymään ja kirjautumaan sisään, mitkä vievät etusivulle
+- etusivuilta löytyy lista ryhmistä
+- etusivulta pääsee
+    - omaan profiiliin, mistä pääsee kirjautumaan ulos
+    - luomaan uuden ryhmän
+    - liittymään ryhmään
+    - ryhmäsivuille (vielä ei ole tarkistusta, onko käyttäjä ryhmän jäsen)
+- ryhmäsivuilta pääsee lähettämään ryhmään viestin
