@@ -6,10 +6,12 @@
 <a href="/front_page">To the Front page</a><br>
 <a href="/send">Send a message</a><br>
 
-Number of messages: {{ count }}
+<p>Number of messages: {{ count }}</p>
+
+<p>From: &nbsp;&nbsp; Time: &nbsp;&nbsp; Message:</p>
 
 <hr>
 {% for message in messages %}
-{{ message }} 
+<p>{{ message[0] }} &nbsp;&nbsp; {{ message[2].strftime("%m-%d %H:%M") }} &nbsp;&nbsp; {{ message[1] }}</p>
 <hr>
 {% endfor %}
