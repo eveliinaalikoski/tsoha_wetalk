@@ -1,9 +1,9 @@
 from app import app
-import users, messages
+import users, messages, groups
 from flask import render_template, request, redirect
-from flask import session
-import db
+from db import db
 from sqlalchemy.sql import text
+from flask import session
 
 @app.route("/")
 def index():
@@ -32,53 +32,62 @@ def register():
 			return render_template("error.html", message="Username has to be 2-20 characters")
 		if password1!=password2:
 			return render_template("error.html", message="Passwords differ")
-		if users.register(name, password1):
-			if users.login(name, password1):
-				return redirect("/front_page")
+		register=users.register(name, password1)
+		if register:
+				if users.login(name, password1):
+					return redirect("/front_page")
+		if not register:
+			return render_template("error.html", message="The username is taken")
 		return render_template("error.html", message="Registeration failed")
 
 
 @app.route("/front_page", methods=["POST", "GET"])
 def front_page():
-    groups=db.db.session.execute(text("SELECT group_name FROM groups"))
-    if request.method=="GET":
-        return render_template("front_page.html", groups=groups)
-    if request.method=="POST":
-        return render_template("front_page.html", groups=groups)
+	group_list=groups.get_groups()
+	return render_template("front_page.html", group_list=group_list)
 
 @app.route("/create_group", methods=["POST", "GET"])
 def create_group():
-    if request.method=="GET":
-        return render_template("create_group.html")
-    if request.method=="POST":
-        group_name=request.form["group_name"]
-        create=groups.create_group(group_name)
-        if create_group(group_name):
-            return redirect("/front_page")
-        return render_template("error.html", message="Creating group failed")
+	if request.method=="GET":
+		return render_template("create_group.html")
+	if request.method=="POST":
+		print("w")
+		group_name=request.form["group_name"]
+		create=groups.create_group(group_name)
+		if create:
+			return redirect("/front_page")
+		return render_template("error.html", message="Creating group failed")
         
-@app.route("/join/{{ group }}", methods=["POST", "GET"])
-def join(group):
-	#get
-	return render_template("/join.html", group=group)
+@app.route("/join", methods=["POST", "GET"])
+def join():
+	group=request.form["group_name"]
+	print(group)
+	user_id=session["user_id"]
+	print(1, user_id)
+	add=groups.add_to_group(group, user_id)
+	print("add")
+	if add:
+		return render_template("join.html", group=group)
+	return render_template("error.html", message="Couldn't join group")
 
 @app.route("/group_page", methods=["POST", "GET"])
 def group_page():
-	if request.method=="GET":
-		group_name=request.form["group"]
+	if request.method=="POST":
+		group_name=request.form["group_name"]
 		list=messages.get_list()
 		return render_template("group_page.html", count=len(list), messages=list, group_name=group_name)
-	if request.method=="POST":
-		return redirect("/group_page")
+	return redirect("/group_page")
 
 @app.route("/send", methods=["POST", "GET"])
 def send():
 	if request.method=="GET":
 		return render_template("send.html")
 	if request.method=="POST":
+		user_id=session["user_id"]
+		# conv.id=
+		# group_id=
 		content=request.form["content"]
-		group_name=request.form["group"]
-		if messages.send(content):
+		if messages.send(user_id, group_id, content):
 			return render_template("group_page.html", group_name=group_name)
 		return render_template("error.html", message="Error sending message")
 

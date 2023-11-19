@@ -1,11 +1,56 @@
+from flask import session, request, abort
+from db import db
+from sqlalchemy.sql import text
+
+def get_group_id(group_name):
+    sql=text("SELECT id FROM groups WHERE group_name=:group_name")
+    result=db.session.execute(sql, {"group_name":group_name}).fetchone()
+    if result:
+        return result[0]
+    return False
+
 def create_group(group_name):
    try:
-        sql="INSERT INTO groups (group_name) VALUES (:group_name)"
+        sql=text("INSERT INTO groups (group_name) VALUES (:group_name)")
         db.session.execute(sql, {"group_name":group_name})
         db.session.commit()
+        add=add_to_group(group_name, session["user_id"])
+        admin=add_admin(group_name, session["user_id"])
+        if add and admin:
+            return True
+   except:
+        return False
+
+def get_groups():
+    groups=db.session.execute(text("SELECT group_name FROM groups;"))
+    return groups.fetchall()
+
+def add_to_group(group_name, user_id):
+    try:
+        sql=text("SELECT id FROM groups WHERE (group_name=:group_name);")
+        group_id=db.session.execute(sql, {"group_name":group_name}).fetchone()[0]
+        print(group_id, "je")
+        if not group_id:
+            return False
+        id=user_id
+        sql=text("INSERT INTO users_groups (user_id, group_id) VALUES (user_id=:user_id, group_id=:group_id);")
+        print(id, user_id)
+        db.session.execute(sql, {"user_id":id, "group_id":group_id})
+        db.session.commit()
+        print("lisäys")
         return True
     except:
         return False
 
-def add_to_group(group_name, username):
-    pass
+def add_admin(group_name, user_id):
+    try:
+        sql=text("SELECT id FROM groups WHERE (group_name=:group_name);")
+        group_id=db.session.execute(sql, {"group_name":group_name}).fetchone()[0]
+        print(user_id, group_id)
+        sql=text("INSERT INTO admins (user_id, group_id) VALUES (user_id=:user_id, group_id=:group_id);")
+        db.session.execute(sql, {"user_id":user_id, "group_id":group_id})
+        print("hep")
+        db.session.commit()
+        return True
+    except:
+        return False

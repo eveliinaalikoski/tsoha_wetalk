@@ -1,6 +1,6 @@
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
-    name TEXT,
+    name TEXT UNIQUE,
     password TEXT
 );
 
@@ -12,7 +12,7 @@ CREATE TABLE conversations (
 
 CREATE TABLE groups (
     id SERIAL PRIMARY KEY,
-    group_name TEXT
+    group_name TEXT UNIQUE
 );
 
 CREATE TABLE messages (

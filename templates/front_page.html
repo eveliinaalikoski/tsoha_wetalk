@@ -9,15 +9,16 @@ Hello {{ session.name }}! <br>
     Here you can talk with friends privately and <br>
     in different groups :)
 </p>
+<p><a href="/profile">Profile</a></p>
+<p><a href="/create_group">Create a new group</a></p>
 
-<a href="/create_group">Create a new group</a><br>
-
-<hr>
-{% for group in groups %}
-{{ group }} 
-<form action="/join/{{ group }}">{{ group }}<method="POST">
-    <input type="submit" value="Join group">
-    <input type="hidden" name="group" value=group>
+<form action="/join" method="POST">
+    Join a group:
+    Name of the group: <input type="text" name="group_name">
+    <input type="submit" value="Join">
 </form>
+<hr>
+{% for group in group_list %}
+{{ group }} 
 <hr>
 {% endfor %}
