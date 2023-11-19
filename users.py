@@ -27,11 +27,9 @@ def logout():
 def register(name, password):
     hash_value=generate_password_hash(password)
     try:
-        print("täs")
         sql=text("INSERT INTO users (name, password) VALUES (:name, :password)")
         db.session.execute(sql, {"name":name, "password":hash_value})
         db.session.commit()
-        print("me")
         return True
     except:
         return False

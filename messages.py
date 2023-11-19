@@ -12,7 +12,6 @@ def send(user_id, group_id, message):
         sql=text("INSERT INTO messages (user_id, group_id, message, sent_at) VALUES (:user_id, :group_id, :message, NOW())")
         db.session.execute(sql, {"user_id":user_id, "group_id":group_id, "message":message})
         db.session.commit()
-        print("jee")
         return True
     except:
         return False

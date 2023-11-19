@@ -32,15 +32,12 @@ def get_groups():
 def add_to_group(group_name, user_id):
     try:
         group_id=get_group_id(group_name)
-        print(group_id, "je")
         if not group_id:
             return False
         id=user_id
         sql=text("INSERT INTO users_groups (group_id, user_id) VALUES (:group_id, :user_id);")
-        print(id, user_id)
         db.session.execute(sql, {"group_id":group_id, "user_id":id})
         db.session.commit()
-        print("lisäys")
         return True
     except:
         return False
@@ -48,10 +45,8 @@ def add_to_group(group_name, user_id):
 def add_admin(group_name, user_id):
     try:
         group_id=get_group_id(group_name)
-        print(user_id, group_id)
         sql=text("INSERT INTO admins (user_id, group_id) VALUES (:user_id, :group_id);")
         db.session.execute(sql, {"user_id":user_id, "group_id":group_id})
-        print("hep")
         db.session.commit()
         return True
     except:

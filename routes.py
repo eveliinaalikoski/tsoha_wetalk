@@ -34,7 +34,6 @@ def register():
 		register=users.register(name, password1)
 		if register:
 				if login(name, password1):
-					print("jep")
 					return redirect("/front_page")
 		if not register:
 			return render_template("error.html", message="The username is taken")
@@ -51,7 +50,6 @@ def create_group():
 	if request.method=="GET":
 		return render_template("create_group.html")
 	if request.method=="POST":
-		print("w")
 		group_name=request.form["group_name"]
 		create=groups.create_group(group_name)
 		if create:
@@ -61,13 +59,9 @@ def create_group():
 @app.route("/join", methods=["POST", "GET"])
 def join():
 	group=request.form["group_name"]
-	print(group)
 	group=groups.get_group(group)
-	print(group)
 	user_id=session["user_id"]
-	print(1, user_id)
 	add=groups.add_to_group(group, user_id)
-	print(add)
 	if add:
 		return render_template("join.html", group=group)
 	return render_template("error.html", message="Couldn't join group")
@@ -75,7 +69,6 @@ def join():
 @app.route("/group_page", methods=["POST", "GET"])
 def group_page():
 	group_name=session["group"]
-	print(group_name)
 	group_id=groups.get_group_id(group_name)
 	list=messages.get_list(group_id)
 	return render_template("group_page.html", count=len(list), messages=list, group_name=group_name)
