@@ -27,3 +27,12 @@ Sovelluksen toiminallisuudet:
     - liittymään ryhmään
     - ryhmäsivuille (vielä ei ole tarkistusta, onko käyttäjä ryhmän jäsen)
 - ryhmäsivuilta pääsee lähettämään ryhmään viestin
+
+## Käynnistys
+
+- kloonataan repositorio (git clone git@github.com:eveliinaalikoski/tsoha_wetalk.git)
+- luodaan kansio .env, jonne määritetään oma SECRET_KEY ja DATABASE_URL
+- avataan virtuaaliympäristö (source venv/bin/activate)
+- asennetaan riippuvuudet (pip install -r requirements.txt)
+- luodaan tietokanta komennolla (psql < schema.sql)
+- käynnistetään sovellus komennolla (flask run)
