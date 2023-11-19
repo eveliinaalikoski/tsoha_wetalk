@@ -86,7 +86,7 @@ def send():
 		return render_template("send.html")
 	if request.method=="POST":
 		user_id=session["user_id"]
-		# conv.id=
+		#conv.id=
 		group_id=groups.get_group_id(session["group"])
 		message=request.form["message"]
 		if messages.send(user_id, group_id, message):
