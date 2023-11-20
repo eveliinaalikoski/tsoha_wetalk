@@ -33,7 +33,7 @@ def register():
 			return render_template("error.html", message="Passwords differ")
 		register=users.register(name, password1)
 		if register:
-				if login(name, password1):
+				if users.login(name, password1):
 					return redirect("/front_page")
 		if not register:
 			return render_template("error.html", message="The username is taken")
