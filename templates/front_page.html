@@ -19,6 +19,6 @@ Hello {{ session.name }}! <br>
 </form>
 <hr>
 {% for group in group_list %}
-{{ group }} <a href="/group_page">Group page</a>
+{{ group[1] }} <a href="/group_page/{{ group[0] }}">{{ group[0] }}</a>
 <hr>
 {% endfor %}
