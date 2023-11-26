@@ -2,9 +2,12 @@ from flask import session, request, abort
 from db import db
 from sqlalchemy.sql import text
 
-def get_group(group_name):
-    session["group_name"]=group_name
-    return session["group_name"]
+def get_group_name(group_id):
+    sql=text("SELECT group_name FROM groups WHERE id=:id")
+    result=db.session.execute(sql, {"id":group_id}).fetchone()
+    if result:
+        return result[0]
+    return False
 
 def get_group_id(group_name):
     sql=text("SELECT id FROM groups WHERE group_name=:group_name")
@@ -26,7 +29,7 @@ def create_group(group_name):
         return False
 
 def get_groups():
-    groups=db.session.execute(text("SELECT group_name FROM groups;"))
+    groups=db.session.execute(text("SELECT id, group_name FROM groups;"))
     return groups.fetchall()
 
 def add_to_group(group_name, user_id):
