@@ -13,12 +13,11 @@ Hello {{ session.name }}! <br>
 <p><a href="/create_group">Create a new group</a></p>
 
 <form action="/join" method="POST">
-    Join a group:
-    Name of the group: <input type="text" name="group_name">
+    Join a group: <input type="text" name="group_name" value="group name">
     <input type="submit" value="Join">
 </form>
 <hr>
 {% for group in group_list %}
-{{ group[1] }} <a href="/group_page/{{ group[0] }}">{{ group[0] }}</a>
+<a href="/group_page/{{ group[0] }}">{{ group[1] }}</a>
 <hr>
 {% endfor %}
