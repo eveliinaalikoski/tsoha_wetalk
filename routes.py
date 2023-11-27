@@ -69,20 +69,30 @@ def join():
 def group_page(group_id):
 	group_name=groups.get_group_name(group_id)
 	list=messages.get_list(group_id)
-	return render_template("group_page.html", count=len(list), messages=list, group_name=group_name)
+	return render_template("group_page.html", 
+						count=len(list), 
+						messages=list, 
+						group_name=group_name, 
+						group_id=group_id)
 
-@app.route("/send", methods=["POST", "GET"])
-def send():
+@app.route("/send/<group_id>/", methods=["POST", "GET"])
+def send(group_id):
 	if request.method=="GET":
-		return render_template("send.html")
+		group_name=groups.get_group_name(group_id)
+		return render_template("send.html", group_name=group_name)
 	if request.method=="POST":
 		user_id=session["user_id"]
+		group_name=groups.get_group_name(group_id)
 		#conv.id=
-		group_id=groups.get_group_id(session["group"])
 		message=request.form["message"]
 		if messages.send(user_id, group_id, message):
-			return render_template("sent.html", group_name=session["group"])
+			return redirect("/sent")
 		return render_template("error.html", message="Error sending message")
+
+@app.route("/sent", methods=["POST", "GET"])
+def sent():
+	message=request.form["message"]
+	return render_template("sent.html", message=message)
 
 @app.route("/profile", methods=["POST", "GET"])
 def profile():
