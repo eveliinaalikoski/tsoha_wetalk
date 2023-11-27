@@ -2,11 +2,11 @@
 <h1>Send message</h1>
 
 <a href="/front_page">To the Front page</a><br>
-<a href="/group_page">To the Group page</a><br>
+<a href="/group_page/{{ group_id }}/">To the Group page</a><br>
 
-<h2>Message to {{ group }}</h2>
+<h2>Message to {{ group_name }}</h2>
 
-<form action="/send" method="POST">
+<form action="/sent" method="POST">
     Message: <br>
     <textarea name="message" rows="5" cols="30">
     </textarea> <br>
