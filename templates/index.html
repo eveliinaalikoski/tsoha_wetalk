@@ -24,8 +24,5 @@ Hello {{ session.name }}! <br>
 <hr>
 {% for group in group_list %}
 <a href="/group_page/{{ group[0] }}">{{ group[1] }}</a>
-<from action="/join" method="POST">
-    <input type="submit" value="Join">
-</from>
 <hr>
 {% endfor %}
