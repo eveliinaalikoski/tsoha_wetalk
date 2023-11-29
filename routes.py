@@ -6,7 +6,8 @@ from flask import session
 
 @app.route("/")
 def index():
-	return render_template("index.html", message="Welcome!")
+	group_list=groups.get_groups()
+	return render_template("index.html", group_list=group_list)
 
 @app.route("/login", methods=["POST", "GET"])
 def login():
@@ -16,7 +17,7 @@ def login():
 		name=request.form["name"]
 		password=request.form["password"]
 		if users.login(name, password):
-			return redirect("/front_page")
+			return redirect("/")
 		return render_template("error.html", message="Wrong name or password")
 
 @app.route("/register", methods=["POST", "GET"])
@@ -34,16 +35,10 @@ def register():
 		register=users.register(name, password1)
 		if register:
 				if users.login(name, password1):
-					return redirect("/front_page")
+					return redirect("/")
 		if not register:
 			return render_template("error.html", message="The username is taken")
 		return render_template("error.html", message="Registeration failed")
-
-
-@app.route("/front_page", methods=["POST", "GET"])
-def front_page():
-	group_list=groups.get_groups()
-	return render_template("front_page.html", group_list=group_list)
 
 @app.route("/create_group", methods=["POST", "GET"])
 def create_group():
@@ -53,13 +48,13 @@ def create_group():
 		group_name=request.form["group_name"]
 		create=groups.create_group(group_name)
 		if create:
-			return redirect("/front_page")
+			return redirect("/")
 		return render_template("error.html", message="Creating group failed")
         
 @app.route("/join", methods=["POST", "GET"])
 def join():
-	group=request.form["group_name"]
-	group=groups.get_group(group)
+	group_name=request.form["group_name"]
+	group=groups.get_group_id(group_name)
 	add=groups.add_to_group(group, session["user_id"])
 	if add:
 		return render_template("join.html", group=group)
@@ -80,19 +75,19 @@ def send(group_id):
 	if request.method=="GET":
 		group_name=groups.get_group_name(group_id)
 		return render_template("send.html", group_name=group_name)
-	if request.method=="POST":
-		user_id=session["user_id"]
-		group_name=groups.get_group_name(group_id)
-		#conv.id=
-		message=request.form["message"]
-		if messages.send(user_id, group_id, message):
-			return redirect("/sent")
-		return render_template("error.html", message="Error sending message")
 
-@app.route("/sent", methods=["POST", "GET"])
-def sent():
+@app.route("/sent/<group_id>/", methods=["POST", "GET"])
+def sent(group_id):
 	message=request.form["message"]
-	return render_template("sent.html", message=message)
+	user_id=session["user_id"]
+	group_name=groups.get_group_name(group_id)
+	#conv.id=
+	message=request.form["message"]
+	if messages.send(user_id, group_id, message):
+		print("onnistu")
+		return render_template("sent.html", message=message, group_name=group_name)
+	return render_template("error.html", message="Error sending message")
+
 
 @app.route("/profile", methods=["POST", "GET"])
 def profile():
