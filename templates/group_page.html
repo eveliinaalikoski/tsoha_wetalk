@@ -3,15 +3,16 @@
 
 <b>{{ group_name }}</b><br>
 
-<a href="/front_page">To the Front page</a><br>
+<a href="/">To the Front page</a><br>
 <a href="/send/{{ group_id }}/">Send a message</a><br>
 
 <p>Number of messages: {{ count }}</p>
 
-<p>From: &nbsp;&nbsp; Time: &nbsp;&nbsp; Message:</p>
-
 <hr>
 {% for message in messages %}
-<p>{{ message[0] }} &nbsp;&nbsp; {{ message[2].strftime("%m-%d %H:%M") }} &nbsp;&nbsp; {{ message[1] }}</p>
+<p>
+    Sent by: {{ message[0] }} <br>
+    At: {{ message[2].strftime("%m-%d %H:%M") }} <br>
+    Message: {{ message[1] }}</p>
 <hr>
 {% endfor %}
