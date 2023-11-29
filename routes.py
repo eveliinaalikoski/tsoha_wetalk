@@ -74,10 +74,9 @@ def group_page(group_id):
 def send(group_id):
 	if request.method=="GET":
 		group_name=groups.get_group_name(group_id)
-		return render_template("send.html", group_name=group_name)
-
-@app.route("/sent/<group_id>/", methods=["POST", "GET"])
-def sent(group_id):
+		return render_template("send.html", 
+						 group_name=group_name, 
+						 group_id=group_id)
 	message=request.form["message"]
 	user_id=session["user_id"]
 	group_name=groups.get_group_name(group_id)
@@ -85,10 +84,11 @@ def sent(group_id):
 	message=request.form["message"]
 	if messages.send(user_id, group_id, message):
 		print("onnistu")
-		return render_template("sent.html", message=message, group_name=group_name)
+		return redirect("/group_page/" + group_id + "/")
 	return render_template("error.html", message="Error sending message")
 
 
 @app.route("/profile", methods=["POST", "GET"])
 def profile():
+	# add logout
     return render_template("profile.html")
