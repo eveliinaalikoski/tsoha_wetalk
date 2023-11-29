@@ -4,11 +4,9 @@ from db import db
 from sqlalchemy.sql import text
 
 def login(name, password):
-    print("täällä")
     sql=text("SELECT id, password FROM users WHERE name=:name")
     result=db.session.execute(sql, {"name":name})
     user=result.fetchone()
-    print(user)
     if not user:
         return False
     if not check_password_hash(user[1], password):
