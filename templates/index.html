@@ -1,10 +1,31 @@
 <title>WeTalk</title>
 <h1>WeTalk</h1>
-<p>{{ message }}</p>
-<br>
+
+{% if session.user_id %}
+Hello {{ session.name }}! <br>
+<p><a href="/profile">Profile</a></p>
+<p><a href="/create_group">Create a new group</a></p>
+{% endif %}
+<p>
+    Welcome to WeTalk! <br>
+    Here you can talk with friends privately and <br>
+    in different groups :)
+</p>
+{% if not session.user_id %}
 <form action="/login" method="GET">
     <input type="submit" value="Log in">
 </form>
 <form action="/register" method="GET">
     <input type="submit" value="Register">
 </form>
+{% endif %}
+
+<h3>Groups:</h3>
+<hr>
+{% for group in group_list %}
+<a href="/group_page/{{ group[0] }}">{{ group[1] }}</a>
+<from action="/join" method="POST">
+    <input type="submit" value="Join">
+</from>
+<hr>
+{% endfor %}
