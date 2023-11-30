@@ -52,6 +52,13 @@ def add_admin(group_name, user_id):
     except:
         return False
 
+def is_admin(user_id, group_id):
+    sql=text("SELECT user_id FROM admins WHERE group_id=:group_id")
+    admin=db.session.execute(sql, {"group_id":group_id}).fetchone()
+    if admin and admin[0]==user_id:
+        return True
+    return False
+
 def is_member(user_id, group_id):
     sql=text("SELECT user_id FROM users_groups WHERE group_id=:group_id")
     members=db.session.execute(sql, {"group_id":group_id}).fetchall()
