@@ -7,11 +7,13 @@
 <b>{{ group_name }}</b><br>
 
 <a href="/">To the Front page</a><br>
+{% if admin %}
+    <a href="/delete_group/{{ group_id }}/">Delete group</a><br>
+{% endif %}
 {% if member %}
-<a href="/send/{{ group_id }}/">Send a message</a><br>
+    <a href="/send/{{ group_id }}/">Send a message</a><br>
 
 <p>Number of messages: {{ count }}</p>
-
 <hr>
 {% for message in messages %}
 <p>
@@ -27,6 +29,6 @@
 {% endif %}
 
 {% if not member %}
-<a href="/join/{{ group_id }}/">Join the group</a>
+    <a href="/join/{{ group_id }}/">Join the group</a>
 {% endif %}
 {% endblock %}
