@@ -19,7 +19,7 @@
     At: {{ message[2].strftime("%m-%d %H:%M") }} <br>
     Message: {{ message[1] }} <br>
     {% if admin %}
-        <a href="/delete_message/{{ group_id }}/{{ message[3] }}">Delete message</a>
+        <a href="/delete_message/{{ message[3] }}">Delete message</a>
     {% endif %}
 </p>
 <hr>
