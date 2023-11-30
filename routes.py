@@ -72,6 +72,7 @@ def group_page(group_id):
 	group_name=groups.get_group_name(group_id)
 	list=messages.get_list(group_id)
 	member=groups.is_member(session["user_id"], group_id)
+	admin=groups.is_admin(session["user_id"], group_id)
 	return render_template("group_page.html", 
 						count=len(list), 
 						messages=list, 
@@ -95,6 +96,12 @@ def send(group_id):
 		return redirect("/group_page/" + group_id + "/")
 	return render_template("error.html", message="Error sending message")
 
+@app.route("/delete_message/<message_id>/")
+def delete_message(message_id):
+	delete=messages.delete(message_id)
+	if delete:
+		return redirect("/group_page/" + group_id + "/")
+	return render_template("error.html", message="Error deleting message")
 
 @app.route("/profile", methods=["POST", "GET"])
 def profile():
