@@ -51,10 +51,11 @@ def create_group():
 			return redirect("/")
 		return render_template("error.html", message="Creating group failed")
         
-@app.route("/delete_group/<group_id/")
-def delete_group(group_id):
-	# admins can delete groups 
-	# same for messages!
+# @app.route("/delete_group/<group_id>/")
+# def delete_group(group_id):
+# 	# admins can delete groups 
+# 	# same for messages!
+	
 
 @app.route("/join/<group_id>/", methods=["POST", "GET"])
 def join(group_id):
