@@ -26,9 +26,14 @@ def send(user_id, group_id, message):
 
 def delete(message_id):
     try:
-        sql=text("""DELETE FROM messages WHERE id=:message_id""")
-        db.session.execute(sql, {"id":message_id})
+        sql=text("DELETE FROM messages WHERE id=:message_id")
+        db.session.execute(sql, {"message_id":message_id})
         db.session.commit()
         return True
     except:
         return False
+
+def group_id(message_id):
+    sql = text("SELECT group_id FROM messages WHERE id=:message_id")
+    result = db.session.execute(sql, {"message_id":message_id}).fetchone()
+    return str(result[0])
