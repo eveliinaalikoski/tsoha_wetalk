@@ -71,3 +71,13 @@ def is_member(user_id, group_id):
     if user_id in list:
         return True
     return False
+
+def delete(group_id):
+    try:
+        # delete messages from group, admin, members
+        sql=text("DELETE FROM groups WHERE id=:id")
+        db.session.execute(sql, {"id":group_id})
+        db.session.commit()
+        return True
+    except:
+        return False
