@@ -105,6 +105,13 @@ def delete_message(message_id):
 		return redirect("/group_page/" + group_id + "/")
 	return render_template("error.html", message="Error deleting message")
 
+@app.route("/delete_group/<group_id>/")
+def delete_group(group_id):
+	delete=groups.delete(group_id)
+	if delete:
+		return redirect("/")
+	return render_template("error.html", message="Error deleting group")
+
 @app.route("/profile", methods=["POST", "GET"])
 def profile():
 	# add logout
