@@ -78,7 +78,8 @@ def group_page(group_id):
 						messages=list, 
 						group_name=group_name, 
 						group_id=group_id, 
-						member=member)
+						member=member,
+						admin=admin)
 
 @app.route("/send/<group_id>/", methods=["POST", "GET"])
 def send(group_id):
@@ -98,6 +99,7 @@ def send(group_id):
 
 @app.route("/delete_message/<message_id>/")
 def delete_message(message_id):
+	group_id=messages.group_id(message_id)
 	delete=messages.delete(message_id)
 	if delete:
 		return redirect("/group_page/" + group_id + "/")
