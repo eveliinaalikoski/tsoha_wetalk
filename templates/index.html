@@ -1,4 +1,6 @@
-<title>WeTalk</title>
+{% extends "layout.html" %}
+{% block title %}WeTalk{% endblock %}
+{% block content %}
 <h1>WeTalk</h1>
 
 {% if session.user_id %}
@@ -26,3 +28,4 @@ Hello {{ session.name }}! <br>
 <a href="/group_page/{{ group[0] }}">{{ group[1] }}</a>
 <hr>
 {% endfor %}
+{% endblock %}

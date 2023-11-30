@@ -1,6 +1,9 @@
 <title>Profile</title>
 <h1>Your profile</h1>
 
+{% if session.id %}
 <p>You are logged in as {{ session.name }}</p>
-<a href="/">Log out</a>
-<br>
+<a href="/">Log out</a><br>
+{% else %}
+<p>You are not logged in</p>
+{% endif %}

@@ -6,6 +6,7 @@ from flask import session
 
 @app.route("/")
 def index():
+	print(session["user_id"], session["name"])
 	group_list=groups.get_groups()
 	return render_template("index.html", group_list=group_list)
 
@@ -37,7 +38,7 @@ def register():
 				if users.login(name, password1):
 					return redirect("/")
 		if not register:
-			return render_template("error.html", message="The username is taken")
+			return render_template("error.html", message="The username is already taken")
 		return render_template("error.html", message="Registeration failed")
 
 @app.route("/create_group", methods=["POST", "GET"])
@@ -97,3 +98,8 @@ def send(group_id):
 def profile():
 	# add logout
     return render_template("profile.html")
+
+@app.route("/logout")
+def logout():
+	users.logout()
+	return redirect("/profile")
