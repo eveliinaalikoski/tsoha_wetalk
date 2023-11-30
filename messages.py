@@ -3,7 +3,7 @@ from flask import session, request, abort
 from sqlalchemy.sql import text
 
 def get_list(group_id):
-    sql = text("""SELECT U.name, M.message, M.sent_at 
+    sql = text("""SELECT U.name, M.message, M.sent_at, M.id
                FROM users U, messages M, groups G 
                WHERE G.id=:gid
                AND M.group_id=G.id 
