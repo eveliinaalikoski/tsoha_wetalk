@@ -51,24 +51,29 @@ def create_group():
 			return redirect("/")
 		return render_template("error.html", message="Creating group failed")
         
-@app.route("/join", methods=["POST", "GET"])
-def join():
-	group_name=request.form["group_name"]
-	group=groups.get_group_id(group_name)
-	add=groups.add_to_group(group, session["user_id"])
+@app.route("/join/<group_id>/", methods=["POST", "GET"])
+def join(group_id):
+	group_name=groups.get_group_name(group_id)
+	add=groups.add_to_group(group_id, session["user_id"])
 	if add:
-		return render_template("join.html", group=group)
+		return render_template("join.html", 
+						 group_name=group_name,
+						 group_id=group_id)
 	return render_template("error.html", message="Couldn't join group")
 
 @app.route("/group_page/<group_id>/", methods=["POST", "GET"])
 def group_page(group_id):
 	group_name=groups.get_group_name(group_id)
 	list=messages.get_list(group_id)
+	member=groups.is_member(session["user_id"], group_id)
+	print(session["user_id"], group_id)
+	print(member)
 	return render_template("group_page.html", 
 						count=len(list), 
 						messages=list, 
 						group_name=group_name, 
-						group_id=group_id)
+						group_id=group_id, 
+						member=member)
 
 @app.route("/send/<group_id>/", methods=["POST", "GET"])
 def send(group_id):
