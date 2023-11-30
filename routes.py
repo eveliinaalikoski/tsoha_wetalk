@@ -6,7 +6,6 @@ from flask import session
 
 @app.route("/")
 def index():
-	print(session["user_id"], session["name"])
 	group_list=groups.get_groups()
 	return render_template("index.html", group_list=group_list)
 
@@ -52,6 +51,11 @@ def create_group():
 			return redirect("/")
 		return render_template("error.html", message="Creating group failed")
         
+@app.route("/delete_group/<group_id/")
+def delete_group(group_id):
+	# admins can delete groups 
+	# same for messages!
+
 @app.route("/join/<group_id>/", methods=["POST", "GET"])
 def join(group_id):
 	group_name=groups.get_group_name(group_id)
@@ -67,8 +71,6 @@ def group_page(group_id):
 	group_name=groups.get_group_name(group_id)
 	list=messages.get_list(group_id)
 	member=groups.is_member(session["user_id"], group_id)
-	print(session["user_id"], group_id)
-	print(member)
 	return render_template("group_page.html", 
 						count=len(list), 
 						messages=list, 
@@ -89,7 +91,6 @@ def send(group_id):
 	#conv.id=
 	message=request.form["message"]
 	if messages.send(user_id, group_id, message):
-		print("onnistu")
 		return redirect("/group_page/" + group_id + "/")
 	return render_template("error.html", message="Error sending message")
 

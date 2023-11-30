@@ -32,8 +32,9 @@ def get_groups():
     groups=db.session.execute(text("SELECT id, group_name FROM groups;"))
     return groups.fetchall()
 
-def add_to_group(group_id, user_id):
+def add_to_group(group_name, user_id):
     try:
+        group_id=get_group_id(group_name)
         sql=text("INSERT INTO users_groups (group_id, user_id) VALUES (:group_id, :user_id);")
         db.session.execute(sql, {"group_id":group_id, "user_id":user_id})
         db.session.commit()
