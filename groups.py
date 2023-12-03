@@ -32,6 +32,9 @@ def get_groups():
     groups=db.session.execute(text("SELECT id, group_name FROM groups;"))
     return groups.fetchall()
 
+def get_group_by_user(user_id):
+    sql=text("SELECT G.id, G.group_name FROM groups G, users_groups U WHERE G.id=U.group_id, U.user_id=:")
+
 def add_to_group(group_name, user_id):
     try:
         group_id=get_group_id(group_name)
