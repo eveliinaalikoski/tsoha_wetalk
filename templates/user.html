@@ -6,6 +6,10 @@
 
 <h2>{{ name }}</h2>
 
+<p>
+    <a href="/create_conv/{{ user_id }}">Create conversation with {{ name }}</a>
+</p>
+
 <b>They're in the groups:</b><br>
 {% for group in group_list %}
 <p>
