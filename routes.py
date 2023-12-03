@@ -7,7 +7,10 @@ from flask import session
 @app.route("/")
 def index():
 	group_list=groups.get_groups()
-	return render_template("index.html", group_list=group_list)
+	user_list=users.get_users()
+	return render_template("index.html", 
+						group_list=group_list,
+						user_list=user_list)
 
 @app.route("/login", methods=["POST", "GET"])
 def login():
@@ -110,6 +113,14 @@ def delete_group(group_id):
 def profile():
 	# add logout
     return render_template("profile.html")
+
+@app.route("/user/<user_id>/")
+def user(user_id):
+	name=users.get_name(user_id)
+
+	return render_template("user.html", 
+						user_id=user_id,
+						name=name)
 
 @app.route("/logout")
 def logout():
