@@ -74,7 +74,16 @@ def is_member(user_id, group_id):
 
 def delete(group_id):
     try:
-        # delete messages from group, admin, members
+        # messages
+        sql=text("DELETE FROM messages WHERE group_id=:id")
+        db.session.execute(sql, {"id":group_id})
+        # admin      
+        sql=text("DELETE FROM admins WHERE group_id=:id")
+        db.session.execute(sql, {"id":group_id})
+        # members
+        sql=text("DELETE FROM users_groups WHERE group_id=:id")
+        db.session.execute(sql, {"id":group_id})
+        # group
         sql=text("DELETE FROM groups WHERE id=:id")
         db.session.execute(sql, {"id":group_id})
         db.session.commit()
