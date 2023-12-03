@@ -32,6 +32,18 @@ def register(name, password):
     except:
         return False
 
+def get_users():
+    users=db.session.execute(text("SELECT id, name FROM users;"))
+    return users.fetchall()
+
+def get_name(user_id):
+    sql=text("SELECT name FROM users WHERE id=:id")
+    user=db.session.execute(sql, {"id":user_id}).fetchone()
+    if user:
+        return user[0]
+    return False
+
+
 def check_csrf():
     if session["csrf_token"]!=request.form["csrf_token"]:
         abort(403)
