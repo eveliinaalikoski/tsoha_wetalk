@@ -8,13 +8,8 @@ from flask import session
 def index():
 	group_list=groups.get_groups()
 	user=users.user_id()
-	print(user)
-	if user!=0:
-		user_list=users.get_users(session["user_id"])
-		conv_list=convs.get_convs(session["user_id"])
-	else:
-		user_list=[]
-		conv_list=[]
+	user_list=users.get_users(user)
+	conv_list=convs.get_convs(user)
 	return render_template("index.html", 
 						group_list=group_list,
 						user_list=user_list,
