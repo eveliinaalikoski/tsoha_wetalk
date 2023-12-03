@@ -4,9 +4,8 @@
 <title>Group_page</title>
 <h1>Group page</h1>
 
-<b>{{ group_name }}</b><br>
+<h2>{{ group_name }}</h2>
 
-<a href="/">To the Front page</a><br>
 {% if admin %}
     <a href="/delete_group/{{ group_id }}/">Delete group</a><br>
 {% endif %}
@@ -17,9 +16,9 @@
 <hr>
 {% for message in messages %}
 <p>
-    Sent by: {{ message[0] }} <br>
-    At: {{ message[2].strftime("%m-%d %H:%M") }} <br>
-    Message: {{ message[1] }} <br>
+    <b>Sent by: </b> {{ message[0] }} <br>
+    <b>At: </b> {{ message[2].strftime("%m-%d %H:%M") }} <br>
+    <b>Message: </b> {{ message[1] }} <br>
     {% if admin %}
         <a href="/delete_message/{{ message[3] }}">Delete message</a>
     {% endif %}
@@ -29,6 +28,8 @@
 {% endif %}
 
 {% if not member %}
+    You are not a member of this group. <br>
+    To see messages in the group:
     <a href="/join/{{ group_id }}/">Join the group</a>
 {% endif %}
 {% endblock %}
