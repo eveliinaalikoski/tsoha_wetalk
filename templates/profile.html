@@ -4,11 +4,11 @@
 <title>Profile</title>
 <h1>Your profile</h1>
 
-{% if session.id %}
+{% if session.user_id %}
     <p>You are logged in as {{ session.name }}</p>
     <a href="/logout">Log out</a><br>
 {% endif %}
-{% if not session.id %}
+{% if not session.user_id %}
     <p>You are not logged in</p>
 {% endif %}
 {% endblock %}
