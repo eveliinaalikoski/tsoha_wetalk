@@ -1,5 +1,6 @@
 from app import app
 import users, messages, groups
+from db import db
 from flask import render_template, request, redirect
 from flask import session
 
@@ -53,7 +54,7 @@ def create_group():
 @app.route("/join/<group_id>/", methods=["POST", "GET"])
 def join(group_id):
 	group_name=groups.get_group_name(group_id)
-	add=groups.add_to_group(group_id, session["user_id"])
+	add=groups.add_to_group(group_name, session["user_id"])
 	if add:
 		return render_template("join.html", 
 						 group_name=group_name,
