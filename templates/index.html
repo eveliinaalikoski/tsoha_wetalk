@@ -18,11 +18,24 @@ Hello {{ session.name }}! <br>
 <hr>
 {% for group in group_list %}
 {% if session.user_id %}
-<a href="/group_page/{{ group[0] }}">{{ group[1] }}</a>
+    <a href="/group_page/{{ group[0] }}">{{ group[1] }}</a>
 {% endif %}
 {% if not session.user_id %}
-{{ group[1] }}
+    {{ group[1] }}
 {% endif %}
 <hr>
 {% endfor %}
+
+<h4>Users:</h4>
+<hr>
+{% for user in user_list %}
+{% if session.user_id %}
+    <a href="/user/{{ user[0] }}">{{ user[1] }}</a>
+{% endif %}
+{% if not session.user_id %}
+    {{ user[1] }}
+{% endif %}
+<hr>
+{% endfor %}
+
 {% endblock %}
