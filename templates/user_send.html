@@ -1,0 +1,18 @@
+{% extends "layout.html" %}
+{% block title %}WeTalk{% endblock %}
+{% block content %}
+<title>send</title>
+<h1>Send message</h1>
+
+<a href="/user/{{ user_id }}/">To {{ user }}'s page</a><br>
+
+<h2>Message to {{ user }}</h2>
+
+<form action="/user_send/{{ conv_id }}/" method="POST">
+    Message: <br>
+    <textarea name="message" rows="5" cols="30">
+    </textarea>
+    <br>
+    <input type="submit" value="Send">
+</form>
+{% endblock %}
