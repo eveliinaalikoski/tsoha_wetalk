@@ -1,0 +1,18 @@
+{% extends "layout.html" %}
+{% block title %}WeTalk{% endblock %}
+{% block content %}
+<title>send</title>
+<h1>Send message</h1>
+
+<a href="/group_page/{{ group_id }}/">To the Group page</a><br>
+
+<h2>Message to {{ group_name }}</h2>
+
+<form action="/group_send/{{ group_id }}/" method="POST">
+    Message: <br>
+    <textarea name="message" rows="5" cols="30">
+    </textarea>
+    <br>
+    <input type="submit" value="Send">
+</form>
+{% endblock %}
