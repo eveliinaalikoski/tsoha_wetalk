@@ -72,7 +72,7 @@ def is_member(user_id, group_id):
         return True
     return False
 
-def delete(group_id):
+def delete_group(group_id):
     try:
         # messages
         sql=text("DELETE FROM messages WHERE group_id=:id")
