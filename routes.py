@@ -1,5 +1,5 @@
 from app import app
-import users, messages, groups
+import users, messages, groups, convs
 from db import db
 from flask import render_template, request, redirect
 from flask import session
@@ -7,10 +7,12 @@ from flask import session
 @app.route("/")
 def index():
 	group_list=groups.get_groups()
-	user_list=users.get_users()
+	user_list=users.get_users(session["user_id"])
+	conv_list=convs.get_convs(session["user_id"])
 	return render_template("index.html", 
 						group_list=group_list,
-						user_list=user_list)
+						user_list=user_list,
+						conv_list=conv_list)
 
 @app.route("/login", methods=["POST", "GET"])
 def login():
@@ -78,20 +80,64 @@ def group_page(group_id):
 						member=member,
 						admin=admin)
 
-@app.route("/send/<group_id>/", methods=["POST", "GET"])
-def send(group_id):
+@app.route("/group_send/<group_id>/", methods=["POST", "GET"])
+def group_send(group_id):
 	if request.method=="GET":
 		group_name=groups.get_group_name(group_id)
-		return render_template("send.html", 
+		return render_template("group_send.html", 
 						 group_name=group_name, 
 						 group_id=group_id)
 	message=request.form["message"]
 	user_id=session["user_id"]
 	group_name=groups.get_group_name(group_id)
-	#conv.id=
-	message=request.form["message"]
 	if messages.send(user_id, group_id, message):
 		return redirect("/group_page/" + group_id + "/")
+	return render_template("error.html", message="Error sending message")
+
+@app.route("/create_conv/<user_id>/")
+def create_conv(user_id):
+	# check if they already have a conv
+	create=convs.create(session["user_id"], user_id)
+	print(create)
+	conv_id=convs.get_conv_id(session["user_id"], user_id)
+	print(conv_id)
+	if create:
+		return redirect("/conv/" + str(conv_id) + "/")
+	return render_template("error.html", message="Couldn't create conversation")
+
+@app.route("/conv/<conv_id>/")
+def conv(conv_id):
+	# maybe conversations have names or another way 
+	# to get them listed in the front page
+	conv_users=convs.get_users(conv_id)
+	if conv_users[0]==session["user_id"]:
+		user=users.get_name(conv_users[1])
+	else:
+		user=users.get_name(conv_users[0])
+	messages=convs.get_messages(conv_id)
+	return render_template("conv.html", 
+						conv_id=conv_id,
+						user=user, 
+						messages=messages,
+						count=len(messages))
+
+@app.route("/user_send/<conv_id>/", methods=["POST", "GET"])
+def user_send(conv_id):
+	if request.method=="GET":
+		conv_users=convs.get_users(conv_id)
+		if conv_users[0]==session["user_id"]:
+			user=users.get_name(conv_users[1])
+			user_id=conv_users[1]
+		else:
+			user=users.get_name(conv_users[0])
+			user_id=conv_users[0]
+		return render_template("user_send.html",
+						 user=user,
+						 user_id=user_id,
+						 conv_id=conv_id)
+	message=request.form["message"]
+	if convs.send(session["user_id"], conv_id, message):
+		return redirect("/conv/" + conv_id + "/")
 	return render_template("error.html", message="Error sending message")
 
 @app.route("/delete_message/<message_id>/")
