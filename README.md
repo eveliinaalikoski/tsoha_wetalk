@@ -28,6 +28,20 @@ Sovelluksen toiminallisuudet:
     - ryhmäsivuille (vielä ei ole tarkistusta, onko käyttäjä ryhmän jäsen)
 - ryhmäsivuilta pääsee lähettämään ryhmään viestin
 
+## Välipalautus 3
+
+Sovelluksen toiminnallisuudet (viime palautuksen lisäksi):
+- etusivulta löytyy listat
+    - ryhmistä
+    - yksityiskeskusteluista (joihin täytyy lisätä jokin tunniste miten listataan)
+    - käyttäjistä
+- kirjautuneena näitä painamalla pääsee
+    - ryhmissä ryhmäsivulle, jos on jäsen ja jos ei ole, pääsee liittymään
+    - keskustelulinkistä ei vielä pääse mihinkään
+    - käyttäjistä pääsee käyttäjän sivulle, jossa
+        - linkki ksityiskeskustelusivulle, jossa voi laittaa viestiä
+        - lista ryhmistä missä käyttäjä on (ei vielä näy)
+
 ## Käynnistys
 
 - kloonataan repositorio (git clone git@github.com:eveliinaalikoski/tsoha_wetalk.git)
