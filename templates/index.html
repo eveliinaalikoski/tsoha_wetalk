@@ -13,19 +13,16 @@ Hello {{ session.name }}! <br>
     Here you can talk with friends privately and <br>
     in different groups :)
 </p>
-{% if not session.user_id %}
-<form action="/login" method="GET">
-    <input type="submit" value="Log in">
-</form>
-<form action="/register" method="GET">
-    <input type="submit" value="Register">
-</form>
-{% endif %}
 
 <h3>Groups:</h3>
 <hr>
 {% for group in group_list %}
+{% if session.user_id %}
 <a href="/group_page/{{ group[0] }}">{{ group[1] }}</a>
+{% endif %}
+{% if not session.user_id %}
+{{ group[1] }}
+{% endif %}
 <hr>
 {% endfor %}
 {% endblock %}
