@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+{% block title %}WeTalk{% endblock %}
+{% block content %}
+<title>user_page</title>
+<h1>User page</h1>
+
+<h2>{{ name }}</h2>
+
+<b>They're in the groups:</b><br>
+{% for group in group_list %}
+<p>
+    {{ group }}<br>
+</p>
+<hr>
+{% endfor %}
+
+{% endblock %}
