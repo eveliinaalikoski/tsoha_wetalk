@@ -26,7 +26,16 @@ Hello {{ session.name }}! <br>
 <hr>
 {% endfor %}
 
-<h4>Users:</h4>
+{% if session.user_id %}
+<h3>Conversations:</h3>
+<hr>
+{% for conv in conv_list %}
+    <a href="/conv/{{ conv_id }}">conversation?</a>
+<hr>
+{% endfor %}
+{% endif %}
+
+<h3>Users:</h3>
 <hr>
 {% for user in user_list %}
 {% if session.user_id %}
