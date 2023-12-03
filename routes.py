@@ -1,7 +1,6 @@
 from app import app
 import users, messages, groups
 from flask import render_template, request, redirect
-from db import db
 from flask import session
 
 @app.route("/")
@@ -50,12 +49,6 @@ def create_group():
 		if create:
 			return redirect("/")
 		return render_template("error.html", message="Creating group failed")
-        
-# @app.route("/delete_group/<group_id>/")
-# def delete_group(group_id):
-# 	# admins can delete groups 
-# 	# same for messages!
-	
 
 @app.route("/join/<group_id>/", methods=["POST", "GET"])
 def join(group_id):
@@ -107,10 +100,10 @@ def delete_message(message_id):
 
 @app.route("/delete_group/<group_id>/")
 def delete_group(group_id):
-	delete=groups.delete(group_id)
+	delete=groups.delete_group(group_id)
 	if delete:
 		return redirect("/")
-	return render_template("error.html", message="Error deleting group")
+	return render_template("error.html", message="Error deleting a group")	
 
 @app.route("/profile", methods=["POST", "GET"])
 def profile():
