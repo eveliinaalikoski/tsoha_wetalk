@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+{% block title %}WeTalk{% endblock %}
+{% block content %}
+<title>Conv_page</title>
+<h2>Conversation between you and {{ user }}</h2>
+
+<a href="/user_send/{{ conv_id }}/">Send a message</a><br>
+<p>Number of messages: {{ count }}</p>
+<hr>
+{% for message in messages %}
+<p>
+    <b>Sent by: </b> {{ message[0] }} <br>
+    <b>At: </b> {{ message[2].strftime("%m-%d %H:%M") }} <br>
+    <b>Message: </b> {{ message[1] }} <br>
+    {% if message[0]==session.user_id %}
+        <a href="/delete_message/{{ message[3] }}">Delete message</a>
+    {% endif %}
+</p>
+<hr>
+{% endfor %}
+{% endblock %}
