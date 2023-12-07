@@ -3,11 +3,13 @@ from flask import session, request, abort
 from sqlalchemy.sql import text
 
 def get_convs(user_id):
-    sql=text("""SELECT id FROM conversations 
-             WHERE user_id1=:user_id 
-             OR user_id2=:user_id""")
-    convs=db.session.execute(sql, {"user_id":user_id})
-    return convs.fetchall()
+    sql=text("""SELECT C.id, U.name 
+             FROM conversations C, users U
+             WHERE (U.id=C.user_id2 AND C.user_id1=:user_id)
+             OR (U.id=C.user_id1 AND C.user_id2=:user_id)""")
+    convs=db.session.execute(sql, {"user_id":user_id}). fetchall()
+    print(convs)
+    return convs
 
 def create(user_id1, user_id2):
     try:
