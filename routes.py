@@ -108,8 +108,6 @@ def create_conv(user_id):
 
 @app.route("/conv/<conv_id>/")
 def conv(conv_id):
-	# maybe conversations have names or another way 
-	# to get them listed in the front page
 	conv_users=convs.get_users(conv_id)
 	if conv_users[0]==session["user_id"]:
 		user=users.get_name(conv_users[1])
@@ -156,18 +154,20 @@ def delete_group(group_id):
 		return redirect("/")
 	return render_template("error.html", message="Error deleting a group")	
 
-@app.route("/profile", methods=["POST", "GET"])
-def profile():
-	# add logout
-    return render_template("profile.html")
-
 @app.route("/user/<user_id>/")
 def user(user_id):
 	name=users.get_name(user_id)
-
+	conv_id=convs.get_conv_id(session["user_id"], user_id)
+	group_list=groups.get_group_by_user(user_id)
 	return render_template("user.html", 
 						user_id=user_id,
-						name=name)
+						name=name,
+						conv_id=conv_id,
+						group_list=group_list)
+
+@app.route("/profile", methods=["POST", "GET"])
+def profile():
+    return render_template("profile.html")
 
 @app.route("/logout")
 def logout():
