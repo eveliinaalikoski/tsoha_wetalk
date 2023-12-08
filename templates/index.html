@@ -27,10 +27,10 @@ Hello {{ session.name }}! <br>
 {% endfor %}
 
 {% if session.user_id %}
-<h3>Conversations:</h3>
+<h3>Chats:</h3>
 <hr>
 {% for conv in conv_list %}
-    <a href="/conv/{{ conv_id }}">conversation?</a>
+    <a href="/conv/{{ conv[0] }}">{{ conv[1] }}</a>
 <hr>
 {% endfor %}
 {% endif %}
