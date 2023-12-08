@@ -1,0 +1,20 @@
+{% extends "layout.html" %}
+{% block title %}WeTalk{% endblock %}
+{% block content %}
+<title>Groups</title>
+<h1>Groups</h1>
+{% if session.user_id %}
+    <p><a href="/create_group">Create a new group</a></p>
+{% endif %}
+<h2>All groups:</h2>
+<hr>
+{% for group in group_list %}
+    {% if session.user_id %}
+        <a href="/group_page/{{ group[0] }}">{{ group[1] }}</a>
+    {% endif %}
+    {% if not session.user_id %}
+        {{ group[1] }}
+    {% endif %}
+    <hr>
+{% endfor %}
+{% endblock %}
