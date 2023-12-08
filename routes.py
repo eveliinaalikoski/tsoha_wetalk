@@ -46,12 +46,31 @@ def register():
 			return render_template("error.html", message="The username is already taken")
 		return render_template("error.html", message="Registeration failed")
 
+@app.route("/group_list")
+def group_list():
+	group_list=groups.get_groups()
+	return render_template("groups.html", group_list=group_list)
+
+@app.route("/chat_list")
+def chat_list():
+	if not session["user_id"]:
+		return render_template("error.html", message="You have to be signed in to see your chats")
+	conv_list=convs.get_convs(session["user_id"])
+	return render_template("chats.html", conv_list=conv_list)
+
+@app.route("/user_list")
+def user_list():
+	user_list=users.get_users(users.user_id())
+	return render_template("users.html", user_list=user_list)
+
 @app.route("/create_group", methods=["POST", "GET"])
 def create_group():
 	if request.method=="GET":
 		return render_template("create_group.html")
 	if request.method=="POST":
 		group_name=request.form["group_name"]
+		if len(group_name)<2 or len(group_name)>20:
+			return render_template("error.html", message="Groupname has to be 2-20 characters")
 		create=groups.create_group(group_name)
 		if create:
 			return redirect("/")
@@ -83,12 +102,17 @@ def group_page(group_id):
 
 @app.route("/group_send/<group_id>/", methods=["POST", "GET"])
 def group_send(group_id):
+	member=groups.is_member(session["user_id"], group_id)
+	if not member:
+		return render_template("error.html", message="You are not a member of this group")
 	if request.method=="GET":
 		group_name=groups.get_group_name(group_id)
 		return render_template("group_send.html", 
 						 group_name=group_name, 
 						 group_id=group_id)
 	message=request.form["message"]
+	if len(message)<2 or len(message)>200:
+		return render_template("error.html", message="Message must be 2-200 characters long")
 	user_id=session["user_id"]
 	group_name=groups.get_group_name(group_id)
 	if messages.send(user_id, group_id, message):
@@ -97,11 +121,11 @@ def group_send(group_id):
 
 @app.route("/create_conv/<user_id>/")
 def create_conv(user_id):
-	# check if they already have a conv
+	if convs.get_conv_id(session["user_id"], user_id) is not False:
+		return render_template("error.html", message="""You already have a chat 
+						 with this user""")
 	create=convs.create(session["user_id"], user_id)
-	print(create)
 	conv_id=convs.get_conv_id(session["user_id"], user_id)
-	print(conv_id)
 	if create:
 		return redirect("/conv/" + str(conv_id) + "/")
 	return render_template("error.html", message="Couldn't create conversation")
@@ -111,8 +135,10 @@ def conv(conv_id):
 	conv_users=convs.get_users(conv_id)
 	if conv_users[0]==session["user_id"]:
 		user=users.get_name(conv_users[1])
-	else:
+	elif conv_users[1]==session["user_id"]:
 		user=users.get_name(conv_users[0])
+	else:
+		return render_template("error.html", message="You are not a member of this chat")
 	messages=convs.get_messages(conv_id)
 	return render_template("conv.html", 
 						conv_id=conv_id,
@@ -135,6 +161,8 @@ def user_send(conv_id):
 						 user_id=user_id,
 						 conv_id=conv_id)
 	message=request.form["message"]
+	if len(message)<2 or len(message)>200:
+		return render_template("error.html", message="Message must be 2-200 characters long")
 	if convs.send(session["user_id"], conv_id, message):
 		return redirect("/conv/" + conv_id + "/")
 	return render_template("error.html", message="Error sending message")
