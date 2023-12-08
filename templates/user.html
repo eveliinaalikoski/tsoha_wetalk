@@ -7,15 +7,18 @@
 <h2>{{ name }}</h2>
 
 <p>
+{% if conv_id %}
+    <a href="/conv/{{ conv_id }}">Your conversation with {{ name }}</a>
+{% endif %}
+{% if not conv_id %}
     <a href="/create_conv/{{ user_id }}">Create conversation with {{ name }}</a>
+{% endif %}
 </p>
 
 <b>They're in the groups:</b><br>
 {% for group in group_list %}
-<p>
-    {{ group }}<br>
-</p>
 <hr>
+    <a href="/group_page/{{ group[0] }}">{{ group[1] }}</a>
 {% endfor %}
 
 {% endblock %}
