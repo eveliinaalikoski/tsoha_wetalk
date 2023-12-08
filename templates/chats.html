@@ -1,0 +1,14 @@
+{% extends "layout.html" %}
+{% block title %}WeTalk{% endblock %}
+{% block content %}
+<title>Chats</title>
+<h1>Chats</h1>
+<p>
+    Here are your private chats with other users!
+</p>
+<hr>
+{% for conv in conv_list %}
+    <a href="/conv/{{ conv[0] }}">{{ conv[1] }}</a>
+    <hr>
+{% endfor %}
+{% endblock %}
