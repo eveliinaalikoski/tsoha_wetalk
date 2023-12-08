@@ -1,0 +1,51 @@
+body {
+    margin: auto;
+    text-align: center;
+    font-family: serif;
+    background-color: #ccffcc;
+    font-size: large;
+}
+
+h1 {
+    color: #004000;
+}
+
+h2, h3 {
+    color: #006600;
+}
+
+p {
+    color: #4f754f;
+}
+
+a {
+    color: #266c26;
+}
+
+a:hover {
+    color: #003000;
+}
+
+textarea {
+    color: #009900;
+    background-color: #ccffcc;
+}
+
+input {
+    color: #005300;
+    background-color: #ccffcc;
+}
+
+input #button {
+    background-color: #99ff99;
+}
+
+input #button:hover {
+    background-color: #003000;
+    color: #003000;
+}
+
+hr {
+    color: #99ff99;
+}
+
