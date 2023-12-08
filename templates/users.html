@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+{% block title %}WeTalk{% endblock %}
+{% block content %}
+<title>Users</title>
+<h1>Users</h1>
+<hr>
+{% for user in user_list %}
+    {% if session.user_id %}
+        <a href="/user/{{ user[0] }}">{{ user[1] }}</a>
+    {% endif %}
+    {% if not session.user_id %}
+        {{ user[1] }}
+    {% endif %}
+    <hr>
+{% endfor %}
+{% endblock %}
