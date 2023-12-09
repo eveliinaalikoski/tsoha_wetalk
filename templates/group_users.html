@@ -13,7 +13,11 @@
     </p>
     {% for user in user_list %}
         <hr>
-        <a href="/user/{{ user[0] }}">{{ user[1] }}</a>
+        {% if user[0]==session.user_id %}
+            You <a href="/profile">To your profile</a>
+        {% else %}
+            <a href="/user/{{ user[0] }}">{{ user[1] }}</a>
+        {% endif %}
     {% endfor %}
 {% endif %}
 
