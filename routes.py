@@ -213,7 +213,8 @@ def user(user_id):
 
 @app.route("/profile", methods=["POST", "GET"])
 def profile():
-    return render_template("profile.html")
+	group_list=groups.get_group_by_user(session["user_id"])
+	return render_template("profile.html", group_list=group_list)
 
 @app.route("/logout")
 def logout():
