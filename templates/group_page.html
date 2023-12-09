@@ -11,20 +11,20 @@
 {% endif %}
 {% if member %}
     <a href="/group_send/{{ group_id }}/">Send a message</a><br>
-
-<p>Number of messages: {{ count }}</p>
-<hr>
-{% for message in messages %}
-<p>
-    <b>Sent by: </b> {{ message[0] }} <br>
-    <b>At: </b> {{ message[2].strftime("%m-%d %H:%M") }} <br>
-    <b>Message: </b> {{ message[1] }} <br>
-    {% if admin %}
-        <a href="/delete_message/{{ message[3] }}">Delete message</a>
-    {% endif %}
-</p>
-<hr>
-{% endfor %}
+    <a href="/group_users/{{ group_id }}">Users in this group</a><br>
+    Number of messages: {{ count }} <br>
+    <hr>
+    {% for message in messages %}
+    <p>
+        <b>Sent by: </b> {{ message[0] }} <br>
+        <b>At: </b> {{ message[2].strftime("%m-%d %H:%M") }} <br>
+        <b>Message: </b> {{ message[1] }} <br>
+        {% if admin %}
+            <a href="/delete_message/{{ message[3] }}">Delete message</a>
+        {% endif %}
+    </p>
+    <hr>
+    {% endfor %}
 {% endif %}
 
 {% if not member %}
