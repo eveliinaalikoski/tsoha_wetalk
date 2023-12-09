@@ -10,6 +10,7 @@
     <form action="/create_group" method="POST">
     Group name: <input type="text" name="group_name"><br>
     <input type="submit" value="Create">
+    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
     </form>
 </p>
 {% endblock %}

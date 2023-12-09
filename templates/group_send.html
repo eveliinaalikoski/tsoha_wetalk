@@ -10,9 +10,9 @@
 
 <form action="/group_send/{{ group_id }}/" method="POST">
     Message: <br>
-    <textarea name="message" rows="5" cols="30">
-    </textarea>
+    <textarea name="message" rows="5" cols="30"></textarea>
     <br>
     <input type="submit" value="Send">
+    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
 </form>
 {% endblock %}

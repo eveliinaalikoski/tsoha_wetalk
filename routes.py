@@ -34,8 +34,12 @@ def register():
 		name=request.form["name"]
 		password1=request.form["password1"]
 		password2=request.form["password2"]
+		if " " in name:
+			return render_template("error.html", message="Spaces aren't allowed in username")
 		if len(name)<2 or len(name)>20:
 			return render_template("error.html", message="Username has to be 2-20 characters")
+		if " " in password1:
+			return render_template("error.html", message="Spaces aren't allowed in password")
 		if password1!=password2:
 			return render_template("error.html", message="Passwords differ")
 		register=users.register(name, password1)
@@ -68,6 +72,7 @@ def create_group():
 	if request.method=="GET":
 		return render_template("create_group.html")
 	if request.method=="POST":
+		users.check_csrf()
 		group_name=request.form["group_name"]
 		if len(group_name)<2 or len(group_name)>20:
 			return render_template("error.html", message="Groupname has to be 2-20 characters")
@@ -76,7 +81,7 @@ def create_group():
 			return redirect("/")
 		return render_template("error.html", message="Creating group failed")
 
-@app.route("/join/<group_id>/", methods=["POST", "GET"])
+@app.route("/join/<group_id>/")
 def join(group_id):
 	group_name=groups.get_group_name(group_id)
 	add=groups.add_to_group(group_name, session["user_id"])
@@ -86,7 +91,7 @@ def join(group_id):
 						 group_id=group_id)
 	return render_template("error.html", message="Couldn't join group")
 
-@app.route("/group_page/<group_id>/", methods=["POST", "GET"])
+@app.route("/group_page/<group_id>/")
 def group_page(group_id):
 	group_name=groups.get_group_name(group_id)
 	list=messages.get_list(group_id)
@@ -110,6 +115,7 @@ def group_send(group_id):
 		return render_template("group_send.html", 
 						 group_name=group_name, 
 						 group_id=group_id)
+	users.check_csrf()
 	message=request.form["message"]
 	if len(message)<2 or len(message)>200:
 		return render_template("error.html", message="Message must be 2-200 characters long")
@@ -122,7 +128,7 @@ def group_send(group_id):
 @app.route("/group_users/<group_id>/")
 def group_users(group_id):
 	member=groups.is_member(session["user_id"], group_id)
-	user_list=users.get_users(session["user_id"])
+	user_list=users.get_users_in_group(group_id)
 	group_name=groups.get_group_name(group_id)
 	return render_template("group_users.html",
 						group_id=group_id, 
@@ -171,6 +177,7 @@ def user_send(conv_id):
 						 user=user,
 						 user_id=user_id,
 						 conv_id=conv_id)
+	users.check_csrf()
 	message=request.form["message"]
 	if len(message)<2 or len(message)>200:
 		return render_template("error.html", message="Message must be 2-200 characters long")

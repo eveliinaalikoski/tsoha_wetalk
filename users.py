@@ -1,3 +1,4 @@
+import secrets
 from werkzeug.security import check_password_hash, generate_password_hash
 from flask import session, request, abort
 from db import db
@@ -13,6 +14,7 @@ def login(name, password):
         return False
     session["user_id"]=user[0]
     session["name"]=name
+    session["csrf_token"]=secrets.token_hex(16)
     return True
 
 def user_id():
@@ -21,6 +23,7 @@ def user_id():
 def logout():
     del session["user_id"]
     del session["name"]
+    del session["csrf_token"]
 
 def register(name, password):
     hash_value=generate_password_hash(password)
@@ -35,6 +38,13 @@ def register(name, password):
 def get_users(user_id):
     sql=text("SELECT id, name FROM users WHERE id<>:user_id;")
     users=db.session.execute(sql, {"user_id":user_id})
+    return users.fetchall()
+
+def get_users_in_group(group_id):
+    sql=text("""SELECT U.id, U.name 
+             FROM users U, users_groups G 
+             WHERE G.group_id=:group_id AND G.user_id=U.id;""")
+    users=db.session.execute(sql, {"group_id":group_id})
     return users.fetchall()
 
 def get_name(user_id):
