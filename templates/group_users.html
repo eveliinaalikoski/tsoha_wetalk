@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+{% block title %}WeTalk{% endblock %}
+{% block content %}
+<title>Group_users</title>
+<h1>Users in {{ group_name }}</h1>
+
+{% if member %}
+    <a href="/group_page/{{ group_id }}">Group page</a><br>
+    <a href="/group_send/{{ group_id }}/">Send a message</a><br>
+    <p>
+        Here are the users that are in group {{ group_name }}.<br>
+        By pressing their name, you can go visit their user page.
+    </p>
+    {% for user in user_list %}
+        <hr>
+        <a href="/user/{{ user[0] }}">{{ user[1] }}</a>
+    {% endfor %}
+{% endif %}
+
+{% if not member %}
+    You are not a member of this group. <br>
+    To see or messages in the group: <br>
+    <a href="/join/{{ group_id }}/">Join the group</a>
+{% endif %}
+{% endblock %}
