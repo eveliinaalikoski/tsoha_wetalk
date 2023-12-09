@@ -5,8 +5,13 @@
 <h1>Your profile</h1>
 
 {% if session.user_id %}
-    <p>You are logged in as {{ session.name }}</p>
+    <p>You are logged in as <b>{{ session.name }}</b></p>
     <a href="/logout">Log out</a><br>
+    <h2>You are in groups:</h2>
+    {% for group in group_list %}
+        <hr>
+        <a href="/group_page/{{ group[0] }}">{{ group[1] }}</a>
+    {% endfor %}
 {% endif %}
 {% if not session.user_id %}
     <p>You are not logged in</p>
