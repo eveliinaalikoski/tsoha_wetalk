@@ -3,6 +3,9 @@
 {% block content %}
 <title>Groups</title>
 <h1>Groups</h1>
+<p>
+    Number of groups: {{ count }}
+</p>
 {% if session.user_id %}
     <p><a href="/create_group">Create a new group</a></p>
 {% endif %}

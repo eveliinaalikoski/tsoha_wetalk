@@ -53,19 +53,31 @@ def register():
 @app.route("/group_list")
 def group_list():
 	group_list=groups.get_groups()
-	return render_template("groups.html", group_list=group_list)
+	count=len(group_list)
+	return render_template("groups.html", 
+						group_list=group_list,
+						count=count)
 
 @app.route("/chat_list")
 def chat_list():
 	if not session["user_id"]:
 		return render_template("error.html", message="You have to be signed in to see your chats")
 	conv_list=convs.get_convs(session["user_id"])
-	return render_template("chats.html", conv_list=conv_list)
+	count=len(conv_list)
+	return render_template("chats.html", 
+						conv_list=conv_list, 
+						count=count)
 
 @app.route("/user_list")
 def user_list():
 	user_list=users.get_users(users.user_id())
-	return render_template("users.html", user_list=user_list)
+	if session["user_id"]:
+		count=len(user_list)+1
+	else:
+		count=len(user_list)
+	return render_template("users.html", 
+						user_list=user_list,
+						count=count)
 
 @app.route("/create_group", methods=["POST", "GET"])
 def create_group():
@@ -97,8 +109,6 @@ def group_page(group_id):
 	list=messages.get_list(group_id)
 	member=groups.is_member(session["user_id"], group_id)
 	admin=groups.get_admin(group_id)
-	print("a", admin)
-	print(admin[0], admin[1])
 	return render_template("group_page.html", 
 						count=len(list), 
 						messages=list, 
