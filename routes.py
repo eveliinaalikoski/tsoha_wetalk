@@ -119,6 +119,17 @@ def group_send(group_id):
 		return redirect("/group_page/" + group_id + "/")
 	return render_template("error.html", message="Error sending message")
 
+@app.route("/group_users/<group_id>/")
+def group_users(group_id):
+	member=groups.is_member(session["user_id"], group_id)
+	user_list=users.get_users(session["user_id"])
+	group_name=groups.get_group_name(group_id)
+	return render_template("group_users.html",
+						group_id=group_id, 
+						member=member,
+						user_list=user_list,
+						group_name=group_name)
+
 @app.route("/create_conv/<user_id>/")
 def create_conv(user_id):
 	if convs.get_conv_id(session["user_id"], user_id) is not False:
