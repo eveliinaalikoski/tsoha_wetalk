@@ -96,7 +96,9 @@ def group_page(group_id):
 	group_name=groups.get_group_name(group_id)
 	list=messages.get_list(group_id)
 	member=groups.is_member(session["user_id"], group_id)
-	admin=groups.is_admin(session["user_id"], group_id)
+	admin=groups.get_admin(group_id)
+	print("a", admin)
+	print(admin[0], admin[1])
 	return render_template("group_page.html", 
 						count=len(list), 
 						messages=list, 
