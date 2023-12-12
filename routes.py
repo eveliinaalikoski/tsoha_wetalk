@@ -149,6 +149,8 @@ def group_send(group_id):
 
 @app.route("/group_users/<group_id>/")
 def group_users(group_id):
+	if not session["user_id"]:
+		return render_template("error.html", message="You have to be signed in to see group information")
 	member=groups.is_member(session["user_id"], group_id)
 	user_list=users.get_users_in_group(group_id)
 	group_name=groups.get_group_name(group_id)
@@ -160,6 +162,8 @@ def group_users(group_id):
 
 @app.route("/create_conv/<user_id>/")
 def create_conv(user_id):
+	if not session["user_id"]:
+		return render_template("error.html", message="You have to be signed in to create chats")
 	if convs.get_conv_id(session["user_id"], user_id) is not False:
 		return render_template("error.html", message="""You already have a chat 
 						 with this user""")
@@ -171,6 +175,8 @@ def create_conv(user_id):
 
 @app.route("/conv/<conv_id>/")
 def conv(conv_id):
+	if not session["user_id"]:
+		return render_template("error.html", message="You have to be signed in to have chats")
 	conv_users=convs.get_users(conv_id)
 	if conv_users[0]==session["user_id"]:
 		user=users.get_name(conv_users[1])
@@ -187,14 +193,18 @@ def conv(conv_id):
 
 @app.route("/user_send/<conv_id>/", methods=["POST", "GET"])
 def user_send(conv_id):
+	if not session["user_id"]:
+		return render_template("error.html", message="You have to be signed in to send messages")
 	if request.method=="GET":
 		conv_users=convs.get_users(conv_id)
 		if conv_users[0]==session["user_id"]:
 			user=users.get_name(conv_users[1])
 			user_id=conv_users[1]
-		else:
+		elif conv_users[1]==session["user_id"]:
 			user=users.get_name(conv_users[0])
 			user_id=conv_users[0]
+		else:
+			return render_template("error.html", message="You are not a member of this chat")
 		return render_template("user_send.html",
 						 user=user,
 						 user_id=user_id,
@@ -202,7 +212,11 @@ def user_send(conv_id):
 	users.check_csrf()
 	message=request.form["message"]
 	if len(message)<2 or len(message)>200:
-		return render_template("error.html", message="Message must be 2-200 characters long")
+		return render_template("user_send.html",
+						 user=user,
+						 user_id=user_id,
+						 conv_id=conv_id,
+						 error=True)
 	if convs.send(session["user_id"], conv_id, message):
 		return redirect("/conv/" + conv_id + "/")
 	return render_template("error.html", message="Error sending message")
@@ -217,8 +231,7 @@ def delete_message(message_id):
 
 @app.route("/delete_group/<group_id>/")
 def delete_group(group_id):
-	delete=groups.delete_group(group_id)
-	if delete:
+	if groups.delete_group(group_id):
 		return redirect("/")
 	return render_template("error.html", message="Error deleting a group")	
 

@@ -8,6 +8,12 @@
 
 <h2>Message to {{ user }}</h2>
 
+<p class="error">
+    {% if error %}
+        The message must be 2-200 characters long. <br>
+    {% endif %}
+</p>
+
 <form action="/user_send/{{ conv_id }}/" method="POST">
     Message: <br>
     <textarea name="message" rows="4" cols="50"></textarea>
