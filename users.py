@@ -35,6 +35,14 @@ def register(name, password):
     except:
         return False
 
+def check_name():
+    sql=text("SELECT name FROM users;")
+    users=db.session.execute(sql).fetchall()
+    result=[]
+    for i in users:
+        result.append(i[0])
+    return result
+
 def get_users(user_id):
     sql=text("SELECT id, name FROM users WHERE id<>:user_id;")
     users=db.session.execute(sql, {"user_id":user_id})

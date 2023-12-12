@@ -31,23 +31,28 @@ def register():
 	if request.method=="GET":
 		return render_template("register.html")
 	if request.method=="POST":
+		errors=[]
 		name=request.form["name"]
 		password1=request.form["password1"]
 		password2=request.form["password2"]
 		if " " in name:
-			return render_template("error.html", message="Spaces aren't allowed in username")
+			errors.append(1)
 		if len(name)<2 or len(name)>20:
-			return render_template("error.html", message="Username has to be 2-20 characters")
+			errors.append(2)
 		if " " in password1:
-			return render_template("error.html", message="Spaces aren't allowed in password")
+			errors.append(3)
 		if password1!=password2:
-			return render_template("error.html", message="Passwords differ")
+			errors.append(4)
+		if len(password1)<2 or len(password1)>20:
+			errors.append(2)
+		if name in users.check_name():
+			errors.append(5)
+		if len(errors)!=0:
+			return render_template("register.html", errors=errors)
 		register=users.register(name, password1)
 		if register:
 				if users.login(name, password1):
 					return redirect("/")
-		if not register:
-			return render_template("error.html", message="The username is already taken")
 		return render_template("error.html", message="Registeration failed")
 
 @app.route("/group_list")
@@ -103,7 +108,7 @@ def join(group_id):
 						 group_id=group_id)
 	return render_template("error.html", message="Couldn't join group")
 
-@app.route("/group_page/<group_id>/")
+@app.route("/group_page/<group_id>/", methods=["POST", "GET"])
 def group_page(group_id):
 	group_name=groups.get_group_name(group_id)
 	list=messages.get_list(group_id)
@@ -225,7 +230,7 @@ def user(user_id):
 
 @app.route("/profile", methods=["POST", "GET"])
 def profile():
-	group_list=groups.get_group_by_user(session["user_id"])
+	group_list=groups.get_group_by_user(users.user_id())
 	return render_template("profile.html", group_list=group_list)
 
 @app.route("/logout")

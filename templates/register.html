@@ -13,6 +13,27 @@
     Username and password has to contain 2-20 characters, <br>
     spaces aren't allowed
 </p>
+<p class="error">
+    {% if errors %}
+        OOPS! <br>
+    {% endif %}
+    {% if 1 in errors %}
+        Spaces aren't allowed in username. <br>
+    {% endif %}
+    {% if 2 in errors %}
+        Username and password has to be 2-20 characters. <br>
+    {% endif %}
+    {% if 3 in errors %}
+        Spaces aren't allowed in password. <br>
+    {% endif %}
+    {% if 4 in errors %}
+        Passwords differ. <br>
+    {% endif %}
+    {% if 5 in errors %}
+        The username is already taken <br>
+    {% endif %}
+</p>
+
 <form action="/register" method="POST">
     Username: <input type="text" name="name" required> <br>
     Password: <input type="password" name="password1" required> <br>

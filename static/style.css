@@ -18,6 +18,10 @@ p {
     color: #4f754f;
 }
 
+.error {
+    color: #cc0000;
+}
+
 a {
     color: #266c26;
 }
