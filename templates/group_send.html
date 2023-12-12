@@ -8,11 +8,20 @@
 
 <h2>Message to {{ group_name }}</h2>
 
-<form action="/group_send/{{ group_id }}/" method="POST">
-    Message: <br>
-    <textarea name="message" rows="5" cols="30"></textarea>
-    <br>
-    <input type="submit" value="Send">
-    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
-</form>
+<p class="error">
+    {% if not member %}
+        OOPS! <br>
+        You have to be a member of this group <br>
+        to send messages. <br>
+        <a href="/join/{{ group_id }}/">Join the group</a>
+</p>
+    {% else %}
+        <form action="/group_send/{{ group_id }}/" method="POST">
+            Message: <br>
+            <textarea name="message" rows="5" cols="30"></textarea>
+            <br>
+            <input type="submit" value="Send">
+            <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+        </form>
+    {% endif %}
 {% endblock %}

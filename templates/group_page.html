@@ -5,40 +5,47 @@
 <h1>Group page</h1>
 
 <h2>{{ group_name }}</h2>
-{% if admin[0]==session.user_id %}
-    <p>
-        As the admin of this group, you can delete <br>
-        messages and the whole group.
+{% if not session.user_id %}
+    <p class="error">
+        OOPS! <br>
+        You have to be signed in to see group pages. <br>
     </p>
-    <a href="/delete_group/{{ group_id }}/">Delete group</a><br>
 {% else %}
-    <p>
-        The admin of this group is <a href="/user/{{ admin[0] }}">{{ admin[1] }}</a>
-    </p>
-{% endif %}
-{% if member %}
-    <a href="/group_send/{{ group_id }}/">Send a message</a><br>
-    <a href="/group_users/{{ group_id }}">Users in this group</a><br>
-    <p>
-        Number of messages: {{ count }} <br>
-    </p>
-    <hr>
-    {% for message in messages %}
-    <p>
-        <b>Sent by: </b> {{ message[0] }} <br>
-        <b>At: </b> {{ message[2].strftime("%m-%d %H:%M") }} <br>
-        <b>Message: </b> {{ message[1] }} <br>
-        {% if admin %}
-            <a href="/delete_message/{{ message[3] }}">Delete message</a>
-        {% endif %}
-    </p>
-    <hr>
-    {% endfor %}
-{% endif %}
+    {% if admin[0]==session.user_id %}
+        <p>
+            As the admin of this group, you can delete <br>
+            messages and the whole group.
+        </p>
+        <a href="/delete_group/{{ group_id }}/">Delete group</a><br>
+    {% else %}
+        <p>
+            The admin of this group is <a href="/user/{{ admin[0] }}">{{ admin[1] }}</a>
+        </p>
+    {% endif %}
+    {% if member %}
+        <a href="/group_send/{{ group_id }}/">Send a message</a><br>
+        <a href="/group_users/{{ group_id }}">Users in this group</a><br>
+        <p>
+            Number of messages: {{ count }} <br>
+        </p>
+        <hr>
+        {% for message in messages %}
+        <p>
+            <b>Sent by: </b> {{ message[0] }} <br>
+            <b>At: </b> {{ message[2].strftime("%m-%d %H:%M") }} <br>
+            <b>Message: </b> {{ message[1] }} <br>
+            {% if admin %}
+                <a href="/delete_message/{{ message[3] }}">Delete message</a>
+            {% endif %}
+        </p>
+        <hr>
+        {% endfor %}
+    {% endif %}
 
-{% if not member %}
-    You are not a member of this group. <br>
-    To see or messages in the group: <br>
-    <a href="/join/{{ group_id }}/">Join the group</a>
+    {% if not member %}
+        You are not a member of this group. <br>
+        To see or messages in the group: <br>
+        <a href="/join/{{ group_id }}/">Join the group</a>
+    {% endif %}
 {% endif %}
 {% endblock %}

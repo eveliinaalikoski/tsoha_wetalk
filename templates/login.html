@@ -5,9 +5,22 @@
 <h1>Login</h1>
 
 <p>
-    If you haven't already registered, <br>
+    If you haven't registered yet, <br>
     you can do so from the top of this page.
 </p>
+
+<p class="error">
+    {% if errors %}
+        OOPS! <br>
+    {% endif %}
+    {% if 1 in errors %}
+        Username not found. <br>
+    {% endif %}
+    {% if 2 in errors %}
+        Password is incorrect. <br>
+    {% endif %}
+</p>
+
 <form action="/login" method="POST">
     Username: <input type="text" name="name" required><br>
     Password: <input type="password" name="password" required><br>

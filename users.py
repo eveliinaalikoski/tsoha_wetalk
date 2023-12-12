@@ -48,6 +48,11 @@ def get_users(user_id):
     users=db.session.execute(sql, {"user_id":user_id})
     return users.fetchall()
 
+def count_users():
+    sql=text("SELECT COUNT(id) FROM users;")
+    users=db.session.execute(sql).fetchone()
+    return users[0]
+
 def get_users_in_group(group_id):
     sql=text("""SELECT U.id, U.name 
              FROM users U, users_groups G 

@@ -3,13 +3,20 @@
 {% block content %}
 <title>Chats</title>
 <h1>Chats</h1>
-<p>
-    Here are your private chats with other users! <br>
-    Number of chats: {{ count }}
-</p>
-<hr>
-{% for conv in conv_list %}
-    <a href="/conv/{{ conv[0] }}">{{ conv[1] }}</a>
+{% if not session.user_id %}
+    <p class="error">
+        OOPS! <br>
+        You have to be signed in to see your chats. <br>
+    </p>
+{% else %}
+    <p>
+        Here are your private chats with other users! <br>
+        Number of chats: {{ count }}
+    </p>
     <hr>
-{% endfor %}
+    {% for conv in conv_list %}
+        <a href="/conv/{{ conv[0] }}">{{ conv[1] }}</a>
+        <hr>
+    {% endfor %}
+{% endif %}
 {% endblock %}

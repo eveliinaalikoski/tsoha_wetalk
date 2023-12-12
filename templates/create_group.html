@@ -4,7 +4,17 @@
 <title>create_group</title>
 <h1>Create a group</h1>
 
-<a href="/">To the Front page</a><br>
+<p class="error">
+    {% if errors %}
+        OOPS! <br>
+    {% endif %}
+    {% if 1 in errors %}
+        Groupname has to be 2-20 characters. <br>
+    {% endif %}
+    {% if 2 in errors %}
+        This groupname is already taken. <br>
+    {% endif %}
+</p>
 
 <p>
     <form action="/create_group" method="POST">

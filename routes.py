@@ -22,9 +22,11 @@ def login():
 	if request.method=="POST":
 		name=request.form["name"]
 		password=request.form["password"]
+		if name not in users.check_name():
+			return render_template("login.html", errors=[1])
 		if users.login(name, password):
 			return redirect("/")
-		return render_template("error.html", message="Wrong name or password")
+		return render_template("login.html", errors=[2])
 
 @app.route("/register", methods=["POST", "GET"])
 def register():
@@ -58,17 +60,15 @@ def register():
 @app.route("/group_list")
 def group_list():
 	group_list=groups.get_groups()
-	count=len(group_list)
+	count=groups.count_groups()
 	return render_template("groups.html", 
 						group_list=group_list,
 						count=count)
 
 @app.route("/chat_list")
 def chat_list():
-	if not session["user_id"]:
-		return render_template("error.html", message="You have to be signed in to see your chats")
-	conv_list=convs.get_convs(session["user_id"])
-	count=len(conv_list)
+	conv_list=convs.get_convs(users.user_id())
+	count=convs.count_convs(users.user_id())
 	return render_template("chats.html", 
 						conv_list=conv_list, 
 						count=count)
@@ -76,10 +76,8 @@ def chat_list():
 @app.route("/user_list")
 def user_list():
 	user_list=users.get_users(users.user_id())
-	if session["user_id"]:
-		count=len(user_list)+1
-	else:
-		count=len(user_list)
+	count=users.count_users()
+	print(count, len(user_list))
 	return render_template("users.html", 
 						user_list=user_list,
 						count=count)
@@ -89,10 +87,15 @@ def create_group():
 	if request.method=="GET":
 		return render_template("create_group.html")
 	if request.method=="POST":
+		errors=[]
 		users.check_csrf()
 		group_name=request.form["group_name"]
 		if len(group_name)<2 or len(group_name)>20:
-			return render_template("error.html", message="Groupname has to be 2-20 characters")
+			errors.append(1)
+		if group_name in groups.get_names():
+			errors.append(2)
+		if len(errors)!=0:
+			return render_template("create_group.html", errors=errors)
 		create=groups.create_group(group_name)
 		if create:
 			return redirect("/")
@@ -101,7 +104,7 @@ def create_group():
 @app.route("/join/<group_id>/")
 def join(group_id):
 	group_name=groups.get_group_name(group_id)
-	add=groups.add_to_group(group_name, session["user_id"])
+	add=groups.add_to_group(group_name, users.user_id())
 	if add:
 		return render_template("join.html", 
 						 group_name=group_name,
@@ -112,7 +115,7 @@ def join(group_id):
 def group_page(group_id):
 	group_name=groups.get_group_name(group_id)
 	list=messages.get_list(group_id)
-	member=groups.is_member(session["user_id"], group_id)
+	member=groups.is_member(users.user_id(), group_id)
 	admin=groups.get_admin(group_id)
 	return render_template("group_page.html", 
 						count=len(list), 
@@ -124,9 +127,11 @@ def group_page(group_id):
 
 @app.route("/group_send/<group_id>/", methods=["POST", "GET"])
 def group_send(group_id):
-	member=groups.is_member(session["user_id"], group_id)
+	if not session["user_id"]:
+		return render_template("error.html", message="You have to be signed in to send messages")
+	member=groups.is_member(users.user_id(), group_id)
 	if not member:
-		return render_template("error.html", message="You are not a member of this group")
+		return render_template("group_send.html", member=False)
 	if request.method=="GET":
 		group_name=groups.get_group_name(group_id)
 		return render_template("group_send.html", 

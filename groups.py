@@ -32,6 +32,17 @@ def get_groups():
     groups=db.session.execute(text("SELECT id, group_name FROM groups;"))
     return groups.fetchall()
 
+def get_names():
+    names=db.session.execute(text("SELECT group_name FROM groups;")).fetchall()
+    result=[]
+    for i in names:
+        result.append(i[0])
+    return result
+
+def count_groups():
+    count=db.session.execute(text("SELECT COUNT(id) FROM groups;")).fetchone()
+    return count[0]
+
 def get_group_by_user(user_id):
     sql=text("""SELECT G.id, G.group_name 
              FROM groups G, users_groups U 

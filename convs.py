@@ -7,9 +7,17 @@ def get_convs(user_id):
              FROM conversations C, users U
              WHERE (U.id=C.user_id2 AND C.user_id1=:user_id)
              OR (U.id=C.user_id1 AND C.user_id2=:user_id)""")
-    convs=db.session.execute(sql, {"user_id":user_id}). fetchall()
-    print(convs)
+    convs=db.session.execute(sql, {"user_id":user_id}).fetchall()
     return convs
+
+def count_convs(user_id):
+    sql=text("""SELECT COUNT(C.id) 
+             FROM conversations C, users U
+             WHERE (U.id=C.user_id2 AND C.user_id1=:user_id)
+             OR (U.id=C.user_id1 AND C.user_id2=:user_id)""")
+    count=db.session.execute(sql, {"user_id":user_id}).fetchone()
+    return count[0]
+
 
 def create(user_id1, user_id2):
     try:
