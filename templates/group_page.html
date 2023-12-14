@@ -34,7 +34,7 @@
             <b>Sent by: </b> {{ message[0] }} <br>
             <b>At: </b> {{ message[2].strftime("%m-%d %H:%M") }} <br>
             <b>Message: </b> {{ message[1] }} <br>
-            {% if admin %}
+            {% if admin[0]==session.user_id %}
                 <a href="/delete_message/{{ message[3] }}">Delete message</a>
             {% endif %}
         </p>
