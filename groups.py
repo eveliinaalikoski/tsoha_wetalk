@@ -44,9 +44,10 @@ def count_groups():
     return count[0]
 
 def get_group_by_user(user_id):
-    sql=text("""SELECT G.id, G.group_name 
-             FROM groups G, users_groups U 
-             WHERE G.id=U.group_id AND U.user_id=:user_id""")
+    sql=text("""SELECT G.id, G.group_name
+             FROM groups G
+             JOIN users_groups U
+             ON G.id=U.group_id AND U.user_id=:user_id""")
     groups=db.session.execute(sql, {"user_id":user_id})
     return groups.fetchall()
 
@@ -72,8 +73,9 @@ def add_admin(group_name, user_id):
 
 def get_admin(group_id):
     sql=text("""SELECT U.id, U.name 
-             FROM users U, admins A
-             WHERE A.group_id=:group_id AND A.user_id=U.id""")
+             FROM users U
+             JOIN admins A
+             ON A.group_id=:group_id AND A.user_id=U.id""")
     admin=db.session.execute(sql, {"group_id":group_id}).fetchall()
     if admin:
         return admin[0]
