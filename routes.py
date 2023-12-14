@@ -94,6 +94,8 @@ def create_group():
 			errors.append(1)
 		if group_name in groups.get_names():
 			errors.append(2)
+		if " " in group_name:
+			errors.append(3)
 		if len(errors)!=0:
 			return render_template("create_group.html", errors=errors)
 		create=groups.create_group(group_name)
@@ -136,7 +138,8 @@ def group_send(group_id):
 		group_name=groups.get_group_name(group_id)
 		return render_template("group_send.html", 
 						 group_name=group_name, 
-						 group_id=group_id)
+						 group_id=group_id,
+						 member=True)
 	users.check_csrf()
 	message=request.form["message"]
 	if len(message)<2 or len(message)>200:
@@ -211,7 +214,7 @@ def user_send(conv_id):
 						 conv_id=conv_id)
 	users.check_csrf()
 	message=request.form["message"]
-	if len(message)<2 or len(message)>200:
+	if len(message)<2 or len(message)>200 :
 		return render_template("user_send.html",
 						 user=user,
 						 user_id=user_id,
