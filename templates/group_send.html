@@ -14,8 +14,9 @@
         You have to be a member of this group <br>
         to send messages. <br>
         <a href="/join/{{ group_id }}/">Join the group</a>
+    {% endif %}
 </p>
-    {% else %}
+    {% if member %}
         <form action="/group_send/{{ group_id }}/" method="POST">
             Message: <br>
             <textarea name="message" rows="5" cols="30"></textarea>
