@@ -8,16 +8,18 @@
 </p>
 <hr>
 {% if session.user_id %}
-    You <br>
+    <span style="color:#0c98dd"> {{ session.name }} </span> <br>
     <a href="/profile">To your profile</a>
+    <hr>
 {% endif %}
-<hr>
 {% for user in user_list %}
     {% if session.user_id %}
         <a href="/user/{{ user[0] }}">{{ user[1] }}</a>
     {% endif %}
     {% if not session.user_id %}
+    <span style="color:#000aa7"> 
         {{ user[1] }}
+    </span>
     {% endif %}
     <hr>
 {% endfor %}

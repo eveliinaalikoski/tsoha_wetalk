@@ -18,7 +18,6 @@
 </p>
     {% if member %}
         <form action="/group_send/{{ group_id }}/" method="POST">
-            Message: <br>
             <textarea name="message" rows="5" cols="40"></textarea>
             <br>
             <input type="submit" value="Send">

@@ -22,8 +22,10 @@
 {% endif %}
 
 {% if not member %}
-    You are not a member of this group. <br>
-    To see or messages in the group: <br>
-    <a href="/join/{{ group_id }}/">Join the group</a>
+    <p>
+        You are not a member of this group. <br>
+        To see or messages in the group: <br>
+        <a href="/join/{{ group_id }}/">Join the group</a>
+    </p>
 {% endif %}
 {% endblock %}

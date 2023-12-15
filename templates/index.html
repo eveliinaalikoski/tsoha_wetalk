@@ -29,7 +29,9 @@
     <a href="/group_page/{{ group[0] }}">{{ group[1] }}</a>
 {% endif %}
 {% if not session.user_id %}
-    {{ group[1] }}
+    <span style="color:#000aa7"> 
+        {{ group[1] }}
+    </span>
 {% endif %}
 <hr>
 {% endfor %}
@@ -50,9 +52,10 @@
     <a href="/user/{{ user[0] }}">{{ user[1] }}</a>
 {% endif %}
 {% if not session.user_id %}
-    {{ user[1] }}
+    <span style="color:#000aa7"> 
+        {{ user[1] }}
+    </span>
 {% endif %}
 <hr>
 {% endfor %}
-
 {% endblock %}
