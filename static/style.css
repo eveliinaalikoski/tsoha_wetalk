@@ -2,20 +2,20 @@ body {
     margin: auto;
     text-align: center;
     font-family: serif;
-    background-color: #ccffcc;
+    background-color: #cce6ff;
     font-size: large;
 }
 
 h1 {
-    color: #004000;
+    color: #004280;
 }
 
 h2, h3 {
-    color: #006600;
+    color: #0069cc;
 }
 
 p {
-    color: #4f754f;
+    color: #2080d9;
 }
 
 .error {
@@ -23,33 +23,31 @@ p {
 }
 
 a {
-    color: #266c26;
+    color: #0c98dd;
 }
 
 a:hover {
-    color: #003000;
+    color: #000aa7;
 }
 
 textarea {
-    color: #009900;
-    background-color: #ccffcc;
+    color: #2080d9;
+    background-color: #cce6ff;
 }
 
-input {
-    color: #005300;
-    background-color: #ccffcc;
+input[type=text], input[type=submit], input[type=password] {
+    color: #038ae5;
+    background-color: #cce6ff;
 }
 
-input #button {
-    background-color: #99ff99;
+input[type=submit]:hover {
+    color: #000aa7;    
 }
 
-input #button:hover {
-    background-color: #003000;
-    color: #003000;
+form {
+    color: #1a90ff
 }
 
 hr {
-    color: #99ff99;
+    color: #9fcbf5;
 }
-

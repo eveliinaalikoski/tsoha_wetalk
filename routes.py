@@ -1,6 +1,5 @@
 from app import app
 import users, messages, groups, convs
-from db import db
 from flask import render_template, request, redirect
 from flask import session
 
