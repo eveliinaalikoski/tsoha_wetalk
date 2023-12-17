@@ -6,15 +6,19 @@
 
 Sovelluksessa pystyy juttelemaan muiden käyttäjien kanssa yksityisesti sekä avoimissa ryhmissä. Käyttäjä voi olla peruskäyttäjä tai ryhmän ylläpitäjä.
 
-Sovelluksen ominaisuuksia:
+Sovelluksen ominaisuuksia (**päivitetty lopullinen palautus**):
 
 - voidaan luoda uusi käyttäjä, joka pystyy kirjautumaan sovellukseen sisään ja ulos
-- sovelluksen etusivulla näkyy lista omista keskusteluista sekä ryhmäkeskusteluista
-- käyttäjä voi hakea muita käyttäjiä yksilöllisen käyttäjänimen avulla
+- sovelluksen etusivulla näkyy lista omista keskusteluista, ryhmäkeskusteluista sekä muista käyttäjistä
 - käyttäjä voi luoda uuden ryhmän, jolloin hänestä tulee ryhmän ylläpitäjä
-- käyttäjä voi liittyä listan ryhmiin ja lähettämään sinne viestiä
+    - ylläpitäjänä voi muokata ryhmän nimeä
+    - ylläpitäjä voi myös poistaa yksittäisiä viestejä tai koko ryhmän
+- käyttäjä voi liittyä listan ryhmiin ja lähettää sinne viestiä
 - käyttäjä voi lähettää viestiä muille käyttäjille yksityisesti
-- ylläpitäjä voi muokata ryhmän nimeä sekä poistaa käyttäjiä ryhmästään
+- käyttäjän sivuilta
+    - pääsee aloittamaan chatin tai pääsee jo luotuun chattiin linkin kautta
+    - näkee listan ryhmistä, joissa kyseinen käyttäjä on
+- yläpalkista pääsee etusivulle, ryhmiin, käyttäjiin, chatteihin (kirjautuneena), kirjautumaan sisään/ulos ja rekisteröitymään
 
 ## Välipalautus 2
 
@@ -46,7 +50,9 @@ Sovelluksen toiminnallisuudet (viime palautuksen lisäksi):
 
 - kloonataan repositorio (git clone git@github.com:eveliinaalikoski/tsoha_wetalk.git)
 - luodaan kansio .env, jonne määritetään oma SECRET_KEY ja DATABASE_URL
-- avataan virtuaaliympäristö (source venv/bin/activate)
+- avataan virtuaaliympäristö
+    - (python3 -m venv venv)
+    - (source venv/bin/activate)
 - asennetaan riippuvuudet (pip install -r requirements.txt)
 - luodaan tietokanta komennolla (psql < schema.sql)
 - käynnistetään sovellus komennolla (flask run)
