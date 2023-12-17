@@ -17,7 +17,7 @@ def get_group_id(group_name):
     return False
 
 def create_group(group_name):
-   try:
+    try:
         sql=text("INSERT INTO groups (group_name) VALUES (:group_name)")
         db.session.execute(sql, {"group_name":group_name})
         db.session.commit()
@@ -25,15 +25,25 @@ def create_group(group_name):
         admin=add_admin(group_name, session["user_id"])
         if add and admin:
             return True
-   except:
+    except:
+        return False
+
+def change_group_name(group_name, new_group_name):
+    try:
+        group_id=get_group_id(group_name)
+        sql=text("UPDATE groups SET group_name=:new WHERE id=:id")
+        db.session.execute(sql, {"new":new_group_name, "id":group_id})
+        db.session.commit()
+        return True
+    except:
         return False
 
 def get_groups():
-    groups=db.session.execute(text("SELECT id, group_name FROM groups;"))
+    groups=db.session.execute(text("SELECT id, group_name FROM groups ORDER BY id"))
     return groups.fetchall()
 
 def get_names():
-    names=db.session.execute(text("SELECT group_name FROM groups;")).fetchall()
+    names=db.session.execute(text("SELECT group_name FROM groups ORDER BY id")).fetchall()
     result=[]
     for i in names:
         result.append(i[0])
@@ -54,7 +64,8 @@ def get_group_by_user(user_id):
 def add_to_group(group_name, user_id):
     try:
         group_id=get_group_id(group_name)
-        sql=text("INSERT INTO users_groups (group_id, user_id) VALUES (:group_id, :user_id);")
+        sql=text("""INSERT INTO users_groups (group_id, user_id) 
+                VALUES (:group_id, :user_id);""")
         db.session.execute(sql, {"group_id":group_id, "user_id":user_id})
         db.session.commit()
         return True
@@ -64,7 +75,8 @@ def add_to_group(group_name, user_id):
 def add_admin(group_name, user_id):
     try:
         group_id=get_group_id(group_name)
-        sql=text("INSERT INTO admins (user_id, group_id) VALUES (:user_id, :group_id);")
+        sql=text("""INSERT INTO admins (user_id, group_id) 
+                 VALUES (:user_id, :group_id)""")
         db.session.execute(sql, {"user_id":user_id, "group_id":group_id})
         db.session.commit()
         return True

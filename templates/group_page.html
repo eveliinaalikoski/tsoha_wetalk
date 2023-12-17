@@ -14,8 +14,10 @@
     {% if admin[0]==session.user_id %}
         <p>
             As the admin of this group, you can delete <br>
-            messages and the whole group.
+            messages and the whole group and change <br>
+            the name of the group.
         </p>
+        <a href="/change_group_name/{{ group_id }}">Change groupname</a><br>
         <a href="/delete_group/{{ group_id }}/">Delete group</a><br>
     {% else %}
         <p>
@@ -23,10 +25,10 @@
         </p>
     {% endif %}
     {% if member %}
-        <a href="/group_send/{{ group_id }}/">Send a message</a><br>
         <a href="/group_users/{{ group_id }}">Users in this group</a><br>
         <p>
             Number of messages: {{ count }} <br>
+            <a href="/group_send/{{ group_id }}/">Send a message</a><br>
         </p>
         <hr>
         {% for message in messages %}

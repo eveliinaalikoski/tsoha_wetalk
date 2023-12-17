@@ -162,6 +162,37 @@ def group_users(group_id):
 						user_list=user_list,
 						group_name=group_name)
 
+@app.route("/change_group_name/<group_id>/", methods=["GET", "POST"])
+def change_group_name(group_id):
+	admin=groups.get_admin(group_id)
+	group_name=groups.get_group_name(group_id)
+	if request.method=="POST":
+		errors=[]
+		users.check_csrf()
+		new_group_name=request.form["group_name"]
+		if len(new_group_name)<2 or len(new_group_name)>20:
+			errors.append(1)
+		if new_group_name in groups.get_names():
+			errors.append(2)
+		if new_group_name==group_name:
+			errors.append(3)
+		if " " in new_group_name:
+			errors.append(4)
+		if len(errors)!=0:
+			return render_template("change_group_name.html",
+						  admin=admin,
+						  group_id=group_id,
+						  group_name=group_name,
+						  errors=errors)
+		change=groups.change_group_name(group_name, new_group_name)
+		if change:
+			return redirect("/")
+		return render_template("error.html", message="Changing groupname failed")
+	return render_template("change_group_name.html",
+						admin=admin,
+						group_id=group_id,
+						group_name=group_name)
+
 @app.route("/create_conv/<user_id>/")
 def create_conv(user_id):
 	if not session["user_id"]:

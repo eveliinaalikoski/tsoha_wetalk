@@ -1,0 +1,53 @@
+{% extends "layout.html" %}
+{% block title %}WeTalk{% endblock %}
+{% block content %}
+<title>change_group_name</title>
+<h1>Change groupname</h1>
+
+<h2>{{ group_name }}</h2>
+{% if not session.user_id %}
+    <p class="error">
+        OOPS! <br>
+        You have to be signed in to see group pages. <br>
+    </p>
+{% else %}
+    <a href="/group_page/{{ group_id }}">Back to group page</a><br>
+    {% if admin[0]==session.user_id %}
+        <p>
+            As the admin of this group, you can <br>
+            change the name of the group.
+        </p>
+        <p class="error">
+            {% if errors %}
+                OOPS! <br>
+            {% endif %}
+            {% if 1 in errors %}
+                Groupname has to be 2-20 characters. <br>
+            {% endif %}
+            {% if 2 in errors %}
+                This groupname is already taken. <br>
+            {% endif %}
+            {% if 3 in errors %}
+                New group name can't be the same as <br>
+                the current group name. <br>
+            {% endif %}
+            {% if 4 in errors %}
+                Spaces aren't allowed in groupname. <br>
+            {% endif %}
+        </p>
+        <p>
+            <form action="/change_group_name/{{ group_id }}" method="POST">
+            New group name: <input type="text" name="group_name" required><br>
+            <input type="submit" value="Change">
+            <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+            </form>
+        </p>
+    {% else %}
+        <p>
+            The admin of this group is 
+            <a href="/user/{{ admin[0] }}">{{ admin[1] }}</a><br>
+            Only they can change the name of this group.<br>
+        </p>
+    {% endif %}
+{% endif %}
+{% endblock %}
