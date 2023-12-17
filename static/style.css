@@ -15,7 +15,7 @@ h2, h3 {
 }
 
 p {
-    color: #0770d2;
+    color: #0863b7;
 }
 
 .error {
@@ -23,7 +23,7 @@ p {
 }
 
 a {
-    color: #0c98dd;
+    color: #077cb6;
 }
 
 a:hover {
@@ -36,7 +36,7 @@ textarea {
 }
 
 input[type=text], input[type=submit], input[type=password] {
-    color: #038ae5;
+    color: #0477c3;
     background-color: #cce6ff;
 }
 
@@ -45,7 +45,7 @@ input[type=submit]:hover {
 }
 
 form {
-    color: #1a90ff
+    color: #1281e9
 }
 
 hr {
